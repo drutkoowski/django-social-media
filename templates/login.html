@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% block styles %}
+    <style></style>
+{% endblock %}
+{% block content %}
+    <div class="container vh-100">
+        <div class="row">
+            <div class="col-lg-6 col-sm-12 mt-4">
+                <div class="card p-0">
+                  <div class="card-body p-0">
+                      <img class="w-100 h-100 rounded" src="https://www.lifeberrys.com/img/article/finding-happy-palce-1623054780-lb.jpg" alt="People laughing">
+                  </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-sm-12 mt-4">
+                <form action="">
+                    {% csrf_token %}
+                     <div class="card w-100 h-100">
+                      <div class="card-body">
+                        <h4 class="card-title text-center"><img class="w-50 h-50 rounded" src="https://www.instagram.com/static/images/web/logged_out_wordmark.png/7a252de00b20.png" alt=""></h4>
+                       {% for field in form %}
+                        <div class="fieldWrapper mt-4">
+                            {{ field.errors }}
+                            {{ field }}
+                        </div>
+                    {% endfor %}
+                          <button class="btn btn-submit btn-primary btn-block mt-2">Log in</button>
+                </form>
+                        <div class="row mt-2">
+                            <div class="col-5 p-0"><hr></div>
+                            <div class="col-2 text-center">OR</div>
+                            <div class="col-5 p-0"><hr></div>
+                        </div>
+                          <p class="text-center">Already have an account?</p>
+                          <p class="text-center">Forgot password?</p>
+                      </div>
+                    </div>
+            </div>
+
+
+{#            Footer #}
+            <div class="row fixed-bottom text-center text-secondary">
+                <div class="col-12">
+                    <div class="row">
+                        <div class="col-3"></div>
+                        <div class="mx-auto col-2">
+                            Github
+                        </div>
+                         <div class="mx-auto col-2">
+                            Facebook
+                        </div>
+                         <div class="mx-auto col-2">
+                            Contact me
+                        </div>
+                        <div class="col-3"></div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="row">
+                        <div class="col-12 mb-2 mt-2 text-center text-secondary">
+                           © 2022 Copyright Damian Rutkowski
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
