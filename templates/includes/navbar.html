@@ -1,20 +1,27 @@
-<div class="row mt-3">
-    <div class="col-lg-4 col-sm-4 text-right">
+<div class="row mt-3 text-center">
+    <div class="col-lg-4 col-sm-4 text-lg-right text-sm-center">
         <a href="{% url 'login' %}"><img class="w-10 h-10 rounded text-center" src="https://www.instagram.com/static/images/web/logged_out_wordmark.png/7a252de00b20.png" alt=""></a>
     </div>
-    <div class="col-lg-4 col-sm-4">
-                    <form action="" class="search mt-2" method="get">
-                        <div class="input-group w-50">
-                            <input type="text" class="form-control" style="width:60%;" placeholder="Search" name="keyword">
+    <div class="col-lg-3 col-sm-4" align="center">
+                    <form action="" class="search mt-2" method="post">
+                        <div class="input-group w-80">
+                            <input type="text" class="form-control" placeholder="Search" name="keyword">
 
                             <div class="input-group-append">
-                              <button class="btn btn-light ml-1" type="submit">
-                                <i class="fa fa-search text-primary bg-light"></i>
+                              <button class="btn btn-white ml-1" type="submit">
+                                <i class="fa fa-search text-dark bg-light"></i>
                               </button>
                             </div>
                         </div>
                     </form> <!-- search-wrap .end// -->
     </div>
-    <div class="col-lg-4 col-sm-4">c</div>
+    <div class="col-lg-5 col-sm-4">
+        <div class="row mt-3 pl-4">
+            <div class="col-lg-1 col-sm-1 text-dark"><i class="fa-solid fa-square-plus"></i></div>
+            <div class="col-lg-1 col-sm-1 text-dark"> <i class="fa-solid fa-plus"></i></div>
+            <div class="col-lg-1 col-sm-1 text-dark">AVATAR</div>
+        </div>
+
+    </div>
     <hr class="text-dark">
 </div>
