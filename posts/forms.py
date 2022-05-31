@@ -7,6 +7,7 @@ class PostForm(forms.ModelForm):
         model = Post
         fields = ('photo', 'description')
 
+    description = forms.CharField(widget=forms.Textarea(attrs={"rows": 5, "cols": 20}))
     def __init__(self, *args, **kwargs):
         super(PostForm, self).__init__(*args, **kwargs)
         self.fields["photo"].widget.attrs["placeholder"] = "Enter photo"
