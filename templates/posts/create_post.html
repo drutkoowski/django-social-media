@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    {% include 'includes/navbar.html' %}
+    {% include 'includes/alerts.html' %}
+<div class="container mt-5">
+  <div class="row mt-5">
+        <div class="col-lg-2 col-sm-0"></div>
+
+         <div class="col-lg-6 col-sm-12 p-0">
+             <div class="card p-0">
+                  <div class="card-body p-0 rounded">
+                      <img id="photo" class="w-100 h-100" src="{% static 'images/overview.jpg' %}">
+                  </div>
+                </div>
+               {% for field in form %}
+                        <div class="fieldWrapper mt-4">
+                            {{ field.errors }}
+                            {{ field }}
+                        </div>
+                    {% endfor %}
+                          <button class="btn btn-submit btn-primary btn-block mt-2">Add post</button>
+            </div>
+            <div class="col-lg-3 col-sm-0"></div>
+         </div>
+
+    </div>
+</div>
+
+{% endblock %}
