@@ -1,9 +1,10 @@
+from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.shortcuts import render, redirect
 from .forms import UserForm, UserSignUpForm
-from accounts.models import Account
+from accounts.models import Account, UserProfile
 from django.contrib import messages, auth
-
+from posts.models import Post
 
 # Create your views here.
 def login(request):
@@ -48,18 +49,17 @@ def signup(request):
             user.phone_number = phone_number
             user.username_slug = username
             user.save()
+
+            profile = UserProfile()
+            profile.user = user
+            profile.save()
             messages.error(request, "User successfully created.")
             return redirect('login')
         else:
             messages.error(request, "User with this username already exist.")
             return redirect('signup')
 
-            # create user profile
-            # profile = UserProfile()
-            # profile.user_id = user.id
-            # profile.profile_picture = "default/default_user.png"
-            # profile.save()
-            # print(user.username)
+
     form = UserSignUpForm()
     context = {
         "form": form,
@@ -68,4 +68,16 @@ def signup(request):
 
 
 def home(request):
-    return render(request, "home/home.html")
+    posts = Post.objects.order_by("-created_at").all()
+    print(posts)
+    context = {
+        "posts": posts
+    }
+    return render(request, "home/home.html", context)
+
+
+@login_required(login_url='login')
+def logout(request):
+    auth.logout(request)
+    messages.success(request, "You are logged out successfully.")
+    return redirect(login)

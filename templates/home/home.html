@@ -3,23 +3,26 @@
     {% include 'includes/navbar.html' %}
     {% include 'includes/alerts.html' %}
 <div class="container mt-5">
-  <div class="row mt-5">
-        <div class="col-lg-2 col-sm-0"></div>
-
-         <div class="col-lg-6 col-sm-12 p-0">
-             <div class="card p-0">
-                  <div class="card-body">
-                    <h4 class="card-title">Username, date</h4>
-                      <p>Photo</p>
-                      <i class="fa-solid fa-heart text-dark"></i>
-                      <i class="fa-solid fa-comment text-dark"></i>
-                        <p class="card-text">Username</p>
-                      <p>Description</p>
-                  </div>
+{% if posts %}
+    {% for post in posts %}
+        <div class="row mt-5">
+            <div class="col-lg-2 col-sm-0"></div>
+             <div class="col-lg-6 col-sm-12 p-0">
+                 <div class="card p-0">
+                      <div class="card-body">
+                        <h4 class="card-title">{{ post.owner.user.username}} {{ post.created_at }}</h4>
+                          <img src="{{ post.photo.url }}" class="w-100 h-100" alt="">
+                          <i class="fa-solid fa-heart fa-2x text-primary ml-1"></i>
+                          <i class="fa-solid fa-comment fa-2x text-primary ml-2"></i>
+                            <p class="card-text">{{ post.owner.user.username}}</p>
+                          <p>{{ post.description}}</p>
+                      </div>
+                    </div>
                 </div>
-            </div>
-            <div class="col-lg-3 col-sm-0"></div>
+                <div class="col-lg-3 col-sm-0"></div>
          </div>
+    {% endfor %}
+{% endif %}
 
     </div>
 </div>
