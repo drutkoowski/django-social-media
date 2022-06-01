@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block content %}
+    {% include 'includes/navbar.html' %}
+    {% include 'includes/alerts.html' %}
+    <div class="container">
+        <div class="row mt-4">
+            <div class="col-3 mt-4 text-center">
+                  <div class="p-0">
+                      <img class="w-50 h-50 rounded" src="{{ user_profile.profile_picture.url }}" alt="People laughing">
+                  </div>
+            </div>
+
+            <div class="col-9 mt-4">
+                  <div class="row text-right mt-4">
+                      <div class="col-4">
+                          <h3 class="text-primary">{{ user_profile.user.username }}</h3>
+                      </div>
+                      <div class="col-8 text-left">
+                          {% if not is_followed %}
+                          <form action="{% url 'user_profile' user_profile.user.username_slug %}" method="post">
+                              {% csrf_token %}
+                            <button class="btn btn-primary text-light btn-submit">Follow</button>
+                          </form>
+                          {% else %}
+                                <form action="{% url 'unfollow' user_profile.user.id %}" method="post">
+                                {% csrf_token %}
+                                <button class="btn btn-primary text-light btn-submit">Unfollow</button>
+                          </form>
+                          {% endif %}
+
+                      </div>
+                  </div>
+                <div class="row mt-4">
+                    <div class="col-7 text-right"><b>2</b> Posts <b class="ml-1">321</b> Following <b class="ml-1">2</b> Followers</div>
+                </div>
+            </div>
+        </div>
+        <hr>
+    <div class="row">
+        {% for post in posts %}
+        <div class="col-lg-4 col-sm-12">
+        <div class="card ml-4 mt-4">
+                      <div class="card-body">
+                          <img src="{{ post.photo.url }}" class="rounded img-fluid" style="height: 20rem; width: 20rem" alt="Post Photo">
+                          <i class="fa-solid fa-heart fa-2x text-primary mt-1"></i>
+                          <i class="fa-solid fa-comment fa-2x text-primary ml-2 mt-1"></i>
+                          <p class="card-text">Likes: 5 Comments: 2</p>
+                            <p class="card-text"><b>{{ post.created_at }}</b></p>
+                          <p></p>
+                      </div>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+{% endblock %}

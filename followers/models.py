@@ -7,4 +7,4 @@ from accounts.models import UserProfile
 class UserFollowing(models.Model):
     followed_by = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='followed_by')
     followed_to = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='followed_to')
-    created = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True)

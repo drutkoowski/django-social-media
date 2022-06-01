@@ -72,7 +72,7 @@ class Account(AbstractBaseUser):
 
 class UserProfile(models.Model):
     user = models.OneToOneField(Account, on_delete=models.CASCADE)
-    profile_picture = models.ImageField(blank=True, upload_to='userprofile')
+    profile_picture = models.ImageField(blank=True, upload_to='userprofile', null=True)
     bio = models.CharField(max_length=150, blank=True)
 
     def __str__(self):

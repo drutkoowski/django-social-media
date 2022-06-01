@@ -2,7 +2,7 @@
     <div class="col-lg-4 col-sm-12 text-lg-right text-sm-center">
         <a href="{% url 'home' %}"><img class="w-10 h-10 rounded text-center" src="https://www.instagram.com/static/images/web/logged_out_wordmark.png/7a252de00b20.png" alt=""></a>
     </div>
-    <div class="col-lg-3 col-sm-12" align="center">
+    <div class="col-lg-2 col-sm-12" align="center">
                     <form action="" class="search mt-2" method="post">
                         <div class="input-group w-80">
                             <input type="text" class="form-control" placeholder="Search" name="keyword">
@@ -15,11 +15,11 @@
                         </div>
                     </form> <!-- search-wrap .end// -->
     </div>
-    <div class="col-lg-5 col-sm-12">
+    <div class="col-lg-6 col-sm-12">
         <div class="row mt-3 pl-4">
             <div class="col-lg-1 col-sm-1 text-dark"><a class="text-decoration-none text-dark" href="{% url 'create_post' %}"><i class="fa-solid fa-square-plus"></i></a></div>
-            <div class="col-lg-1 col-sm-1 text-dark">AVATAR</div>
-            {% if user.is_authenticated %}
+             {% if user.is_authenticated %}
+                <div class="col-lg-1 col-sm-1 text-dark"><a href=""><img style="max-height: 30px; max-width: 30px" class="w-100 h-100 rounded" src="{{ get_avatar }}" alt="User avatar"></a></div>
                 <div class="col-lg-1 col-sm-1 text-dark"><a class="text-dark" href="{% url 'logout' %}"><i class="fa-solid fa-arrow-right-from-bracket"></i></a></div>
             {% endif %}
         </div>

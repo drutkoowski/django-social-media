@@ -17,4 +17,4 @@ class PostForm(forms.ModelForm):
             'onchange'] = "document.getElementById('photo').src = window.URL.createObjectURL(this.files[0])"
         self.fields["description"].widget.attrs["placeholder"] = "Enter your caption"
         for field in self.fields:
-            self.fields[field].widget.attrs['class'] = 'form-control text-center'
+            self.fields[field].widget.attrs['class'] = 'form-control'

@@ -7,6 +7,10 @@ class UserForm(forms.ModelForm):
         model = Account
         fields = ('username', 'password')
 
+    password = forms.CharField(widget=forms.PasswordInput(attrs={
+        "placeholder": "Enter password",
+        "class": "form-control",
+    }))
     def __init__(self, *args, **kwargs):
         super(UserForm, self).__init__(*args, **kwargs)
         self.fields["username"].widget.attrs["placeholder"] = "Enter username"

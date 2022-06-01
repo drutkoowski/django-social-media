@@ -1,10 +1,11 @@
 from django.contrib.auth.decorators import login_required
-from django.db.models import Q
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .forms import UserForm, UserSignUpForm
 from accounts.models import Account, UserProfile
 from django.contrib import messages, auth
 from posts.models import Post
+from followers.models import UserFollowing
+
 
 # Create your views here.
 def login(request):
@@ -52,13 +53,13 @@ def signup(request):
 
             profile = UserProfile()
             profile.user = user
+            profile.profile_picture = "userprofile/default_user.png"
             profile.save()
             messages.error(request, "User successfully created.")
             return redirect('login')
         else:
             messages.error(request, "User with this username already exist.")
             return redirect('signup')
-
 
     form = UserSignUpForm()
     context = {
@@ -81,3 +82,36 @@ def logout(request):
     auth.logout(request)
     messages.success(request, "You are logged out successfully.")
     return redirect(login)
+
+
+def profile_page(request, username_slug):
+    if request.method == "POST":
+        current_user = request.user
+        current_user_profile = UserProfile.objects.filter(user__username=current_user.username).first()
+        user_to_follow = UserProfile.objects.filter(user__username_slug=username_slug).first()
+        if current_user is not user_to_follow:
+            user_follow = UserFollowing(followed_by=current_user_profile, followed_to=user_to_follow)
+            user_follow.save()
+        else:
+            messages.warning(request, "You can not follow this profile.")
+
+    current_user = request.user
+    user_profile = get_object_or_404(UserProfile, user__username_slug=username_slug)
+    current_user_profile_to_check = UserProfile.objects.filter(user__username=current_user.username).first()
+    is_followed_by_current = UserFollowing.objects.filter(followed_by=current_user_profile_to_check, followed_to=user_profile).first()
+    user_posts = Post.objects.filter(owner__user=user_profile.user).order_by("created_at").all()
+    context = {
+        "user_profile": user_profile,
+        "posts": user_posts,
+        "is_followed": is_followed_by_current,
+    }
+    return render(request, "accounts/profile_page.html", context)
+
+
+def unfollow(request, user_id):
+    user = request.user
+    followed_by = UserProfile.objects.filter(user=user).first()
+    followed_to = UserProfile.objects.filter(user_id=user_id).first()
+    find_user_to_unfollow = UserFollowing.objects.filter(followed_by=followed_by, followed_to=followed_to).first()
+    find_user_to_unfollow.delete()
+    return redirect("user_profile", followed_to.user.username_slug)
