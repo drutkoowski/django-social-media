@@ -20,8 +20,9 @@
                               </div>
                           </div>
                           <img src="{{ post.photo.url }}" class="w-100 h-100 rounded" style="height: 40rem; width: 40rem" alt="Post Photo">
-                          <i class="fa-solid fa-heart fa-2x text-primary mt-1"></i>
+                          <a href="{% url 'like_post' post.id %}"><i class="fa-solid fa-heart fa-2x text-primary mt-1"></i></a>
                           <i class="fa-solid fa-comment fa-2x text-primary ml-2 mt-1"></i>
+                          <p class="d-inline-block">Likes: {{ post.post_likes }}</p>
                             <p class="card-text">{{ post.owner.user.username}}</p>
                           <p>{{ post.description}}</p>
                       </div>

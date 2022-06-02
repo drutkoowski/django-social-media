@@ -70,7 +70,6 @@ def signup(request):
 
 def home(request):
     posts = Post.objects.order_by("-created_at").all()
-    print(posts)
     context = {
         "posts": posts
     }
