@@ -1,8 +1,10 @@
 from django.contrib.auth.base_user import BaseUserManager, AbstractBaseUser
 from django.db import models
-
-
+from followers.models import UserFollowing
+from posts.models import Post
 # Create your models here.
+
+
 
 class MyAccountManager(BaseUserManager):
     def create_user(self, first_name, last_name, username, email, password=None):
@@ -77,3 +79,15 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return self.user.username
+
+    def followers_count(self):
+        followers = UserFollowing.objects.filter(followed_to=self).count()
+        return followers
+
+    def following_count(self):
+        following = UserFollowing.objects.filter(followed_by=self).count()
+        return following
+
+    def posts_count(self):
+        posts = Post.objects.filter(owner=self).count()
+        return posts

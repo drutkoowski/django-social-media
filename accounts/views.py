@@ -89,12 +89,13 @@ def profile_page(request, username_slug):
         current_user = request.user
         current_user_profile = UserProfile.objects.filter(user__username=current_user.username).first()
         user_to_follow = UserProfile.objects.filter(user__username_slug=username_slug).first()
-        if current_user is not user_to_follow:
+        if current_user_profile.user.username != user_to_follow.user.username:
             user_follow = UserFollowing(followed_by=current_user_profile, followed_to=user_to_follow)
             user_follow.save()
+            return redirect('user_profile', username_slug)
         else:
             messages.warning(request, "You can not follow this profile.")
-
+            return redirect('user_profile', username_slug)
     current_user = request.user
     user_profile = get_object_or_404(UserProfile, user__username_slug=username_slug)
     current_user_profile_to_check = UserProfile.objects.filter(user__username=current_user.username).first()

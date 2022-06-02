@@ -19,7 +19,7 @@
         <div class="row mt-3 pl-4">
             <div class="col-lg-1 col-sm-1 text-dark"><a class="text-decoration-none text-dark" href="{% url 'create_post' %}"><i class="fa-solid fa-square-plus"></i></a></div>
              {% if user.is_authenticated %}
-                <div class="col-lg-1 col-sm-1 text-dark"><a href=""><img style="max-height: 30px; max-width: 30px" class="w-100 h-100 rounded" src="{{ get_avatar }}" alt="User avatar"></a></div>
+                <div class="col-lg-1 col-sm-1 text-dark"><a href="{% url 'user_profile' user.username_slug %}"><img style="max-height: 30px; max-width: 30px" class="w-100 h-100 rounded" src="{{ get_avatar }}" alt="User avatar"></a></div>
                 <div class="col-lg-1 col-sm-1 text-dark"><a class="text-dark" href="{% url 'logout' %}"><i class="fa-solid fa-arrow-right-from-bracket"></i></a></div>
             {% endif %}
         </div>
