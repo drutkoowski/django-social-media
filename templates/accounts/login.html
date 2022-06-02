@@ -18,7 +18,7 @@
                     {% csrf_token %}
                      <div class="card w-100 h-100 text-center">
                       <div class="card-body">
-                        <a href="{% url 'login' %}"><img class="w-35 h-35 rounded" src="https://www.instagram.com/static/images/web/logged_out_wordmark.png/7a252de00b20.png" alt=""></a>
+                        <a href="{% url 'login' %}"><img class="w-35 h-35 rounded" src="https://www.instagram.com/static/images/web/logged_out_wordmark.png/7a252de00b20.png" alt="Instagram"></a>
                        {% include "includes/alerts.html" %}
                        {% for field in form %}
                         <div class="fieldWrapper mt-4">

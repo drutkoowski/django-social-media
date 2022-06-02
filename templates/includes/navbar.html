@@ -3,7 +3,8 @@
         <a href="{% url 'home' %}"><img class="w-10 h-10 rounded text-center" src="https://www.instagram.com/static/images/web/logged_out_wordmark.png/7a252de00b20.png" alt=""></a>
     </div>
     <div class="col-lg-2 col-sm-12" align="center">
-                    <form action="" class="search mt-2" method="post">
+                    <form action="{% url 'search' %}" class="search mt-2" method="get">
+                        {% csrf_token %}
                         <div class="input-group w-80">
                             <input type="text" class="form-control" placeholder="Search" name="keyword">
 

@@ -8,4 +8,5 @@ urlpatterns = [
     path("accounts/<str:username_slug>", views.profile_page, name="user_profile"),
     path("logout/", views.logout, name="logout"),
     path("unfollow/<int:user_id>", views.unfollow, name="unfollow"),
+    path("search/", views.search, name="search"),
 ]

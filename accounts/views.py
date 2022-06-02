@@ -5,28 +5,31 @@ from accounts.models import Account, UserProfile
 from django.contrib import messages, auth
 from posts.models import Post
 from followers.models import UserFollowing
+from django.contrib.auth.models import AnonymousUser
 
 
 # Create your views here.
 def login(request):
     if request.user.is_authenticated:
-        return redirect("home")
-    if request.method == "POST":
-        username = request.POST["username"]
-        password = request.POST["password"]
-        user = auth.authenticate(username=username, password=password)
-        if user is not None:
-            auth.login(request, user)
-            messages.success(request, "You are now logged in")
-            return redirect("home")
-        else:
-            messages.error(request, "Invalid login credentials")
-            return redirect("login")
-    form = UserForm()
-    context = {
-        "form": form,
-    }
-    return render(request, "accounts/login.html", context=context)
+        return redirect('home')
+    else:
+        if request.method == "POST":
+            username = request.POST["username"]
+            password = request.POST["password"]
+            user = auth.authenticate(username=username, password=password)
+            if user is not None:
+                auth.login(request, user)
+                messages.success(request, "You are now logged in")
+                return redirect("home")
+            else:
+                messages.error(request, "Invalid login credentials")
+                return redirect("login")
+
+        form = UserForm()
+        context = {
+            "form": form,
+        }
+        return render(request, "accounts/login.html", context=context)
 
 
 def signup(request):
@@ -80,7 +83,7 @@ def home(request):
 def logout(request):
     auth.logout(request)
     messages.success(request, "You are logged out successfully.")
-    return redirect(login)
+    return redirect('login')
 
 
 def profile_page(request, username_slug):
@@ -98,7 +101,8 @@ def profile_page(request, username_slug):
     current_user = request.user
     user_profile = get_object_or_404(UserProfile, user__username_slug=username_slug)
     current_user_profile_to_check = UserProfile.objects.filter(user__username=current_user.username).first()
-    is_followed_by_current = UserFollowing.objects.filter(followed_by=current_user_profile_to_check, followed_to=user_profile).first()
+    is_followed_by_current = UserFollowing.objects.filter(followed_by=current_user_profile_to_check,
+                                                          followed_to=user_profile).first()
     user_posts = Post.objects.filter(owner__user=user_profile.user).order_by("created_at").all()
     context = {
         "user_profile": user_profile,
@@ -115,3 +119,20 @@ def unfollow(request, user_id):
     find_user_to_unfollow = UserFollowing.objects.filter(followed_by=followed_by, followed_to=followed_to).first()
     find_user_to_unfollow.delete()
     return redirect("user_profile", followed_to.user.username_slug)
+
+
+def search(request):
+
+    if "keyword" in request.GET:
+        keyword = request.GET["keyword"]
+        if keyword:
+            users = UserProfile.objects.filter(user__username__icontains=keyword).all()
+            context = {
+                "users": users,
+            }
+            return render(request, "home/home.html", context)
+    posts = Post.objects.order_by("-created_at").all()
+    context = {
+        "posts": posts
+    }
+    return render(request, "home/home.html", context)

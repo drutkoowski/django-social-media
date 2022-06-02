@@ -11,6 +11,7 @@ class UserForm(forms.ModelForm):
         "placeholder": "Enter password",
         "class": "form-control",
     }))
+
     def __init__(self, *args, **kwargs):
         super(UserForm, self).__init__(*args, **kwargs)
         self.fields["username"].widget.attrs["placeholder"] = "Enter username"
@@ -28,6 +29,7 @@ class UserSignUpForm(forms.ModelForm):
         "placeholder": "Enter password",
         "class": "form-control",
     }))
+
     def __init__(self, *args, **kwargs):
         super(UserSignUpForm, self).__init__(*args, **kwargs)
         self.fields["first_name"].widget.attrs["placeholder"] = "First name"

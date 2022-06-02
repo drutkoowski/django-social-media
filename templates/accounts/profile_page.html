@@ -42,11 +42,11 @@
         <div class="card ml-4 mt-4">
                       <div class="card-body">
                           <img src="{{ post.photo.url }}" class="rounded img-fluid" style="height: 20rem; width: 20rem" alt="Post Photo">
-                          <i class="fa-solid fa-heart fa-2x text-primary mt-1"></i>
-                          <i class="fa-solid fa-comment fa-2x text-primary ml-2 mt-1"></i>
-                          <p class="card-text">Likes: 5 Comments: 2</p>
-                            <p class="card-text"><b>{{ post.created_at }}</b></p>
-                          <p></p>
+                          <p class="card-text mt-2"><b>{{ post.description }}</b></p>
+                          <a href="{% url 'like_post' post.id %}"><i class="fa-solid fa-heart fa-2x text-primary"></i></a>
+                          <a href="{% url 'single_post' post.id %}"><i class="fa-solid fa-comment fa-2x text-primary ml-2"></i></a>
+                          <p class="card-text"><b>Likes: {{ post.post_likes }}</b></p>
+                            <p class="card-text">{{ post.created_at }}</p>
                       </div>
                 </div>
             </div>

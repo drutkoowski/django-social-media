@@ -1,5 +1,5 @@
 from django import forms
-from .models import Post
+from .models import Post, PostComments
 
 
 class PostForm(forms.ModelForm):
@@ -16,5 +16,17 @@ class PostForm(forms.ModelForm):
         self.fields["photo"].widget.attrs[
             'onchange'] = "document.getElementById('photo').src = window.URL.createObjectURL(this.files[0])"
         self.fields["description"].widget.attrs["placeholder"] = "Enter your caption"
+        for field in self.fields:
+            self.fields[field].widget.attrs['class'] = 'form-control'
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = PostComments
+        fields = ('content',)
+
+    def __init__(self, *args, **kwargs):
+        super(CommentForm, self).__init__(*args, **kwargs)
+        self.fields["content"].widget.attrs["placeholder"] = "Enter comment"
         for field in self.fields:
             self.fields[field].widget.attrs['class'] = 'form-control'
