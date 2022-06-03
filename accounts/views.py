@@ -74,7 +74,7 @@ def signup(request):
 @login_required(login_url='login')
 def home(request):
     posts = Post.objects.order_by("-created_at").all()
-    all_posts = sorted(posts, key=lambda ur: ur.post_likes())
+    all_posts = sorted(posts, key=lambda ur: (ur.post_likes(), ur.post_comments()))
     all_posts.reverse()
     context = {
         "posts": all_posts,
