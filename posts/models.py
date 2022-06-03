@@ -17,10 +17,13 @@ class Post(models.Model):
         likes = PostLikes.objects.filter(post=self).count()
         return likes
 
+    def post_comments(self):
+        comments = PostComments.objects.filter(post=self).count()
+        return comments
+
     def view_recent_comments(self):
         recent_comments = PostComments.objects.filter(post=self).order_by("created_at")[:5].all()
         return recent_comments
-
 
 
 class PostLikes(models.Model):

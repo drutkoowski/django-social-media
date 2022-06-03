@@ -139,3 +139,7 @@ def search(request):
         "posts": posts
     }
     return render(request, "home/home.html", context)
+
+
+def home_friends(request):
+    return render(request, "home/home_followed_only.html")

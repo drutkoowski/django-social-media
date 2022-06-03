@@ -91,3 +91,11 @@ class UserProfile(models.Model):
     def posts_count(self):
         posts = Post.objects.filter(owner=self).count()
         return posts
+
+    def get_following_posts(self):
+        following_users = UserFollowing.objects.filter(followed_by=self).all()
+        user_profiles_list = []
+        for user in following_users:
+            user_profiles_list.append(user.followed_to.user.username)
+        posts_of_followings = Post.objects.filter(owner__user__username__in=user_profiles_list).all()
+        return posts_of_followings
