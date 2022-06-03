@@ -70,6 +70,7 @@ def signup(request):
     }
     return render(request, "accounts/signup.html", context=context)
 
+
 @login_required(login_url='login')
 def home(request):
     posts = Post.objects.order_by("-created_at").all()
@@ -84,6 +85,7 @@ def logout(request):
     auth.logout(request)
     messages.success(request, "You are logged out successfully.")
     return redirect('login')
+
 
 @login_required(login_url='login')
 def profile_page(request, username_slug):
@@ -111,6 +113,7 @@ def profile_page(request, username_slug):
     }
     return render(request, "accounts/profile_page.html", context)
 
+
 @login_required(login_url='login')
 def unfollow(request, user_id):
     user = request.user
@@ -120,9 +123,9 @@ def unfollow(request, user_id):
     find_user_to_unfollow.delete()
     return redirect("user_profile", followed_to.user.username_slug)
 
+
 @login_required(login_url='login')
 def search(request):
-
     if "keyword" in request.GET:
         keyword = request.GET["keyword"]
         if keyword:
@@ -136,5 +139,3 @@ def search(request):
         "posts": posts
     }
     return render(request, "home/home.html", context)
-
-

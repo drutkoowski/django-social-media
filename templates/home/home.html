@@ -3,6 +3,45 @@
     {% include 'includes/navbar.html' %}
     {% include 'includes/alerts.html' %}
 <div class="container mt-5">
+{#{% if get_followed_posts %}#}
+{#     {% for post in get_followed_posts %}#}
+{#        <div class="row mt-5">#}
+{#            <div class="col-lg-2 col-sm-0"></div>#}
+{#             <div class="col-lg-7 col-sm-12 p-0">#}
+{#                 <div class="card p-0">#}
+{#                      <div class="card-body">#}
+{#                          <div class="row">#}
+{#                              <div class="col-lg-8 col-sm-8">#}
+{#                                  <a class="text-decoration-none" href="{% url 'user_profile' post.owner.user.username_slug %}">#}
+{#                                  <img class="avatar avatar-32 bg-light rounded-circle text-white" src="{{ post.owner.profile_picture.url }}">#}
+{#                                  <h4 class="card-title d-inline-block">{{ post.owner.user.username}}</h4></a>#}
+{##}
+{#                              </div>#}
+{#                               <div class="col-lg-4 col-sm-4">#}
+{#                                    <p>{{ post.created_at }}</p>#}
+{#                              </div>#}
+{#                          </div>#}
+{#                          <img src="{{ post.photo.url }}" class="w-100 h-100 rounded" style="height: 40rem; width: 40rem" alt="Post Photo">#}
+{#                          <a href="{% url 'like_post' post.id %}"><i class="fa-solid fa-heart fa-2x text-primary mt-1"></i></a>#}
+{#                          <a href="{% url 'single_post' post.id %}"><i class="fa-solid fa-comment fa-2x text-primary ml-2 mt-1"></i></a>#}
+{#                          <p class="d-inline-block">Likes: {{ post.post_likes }}</p>#}
+{#                            <h3 class="card-text"><a class="text-decoration-none" href="{% url 'user_profile' post.owner.user.username_slug %}">{{ post.owner.user.username}}</a></h3>#}
+{#                          <small>{{ post.description}}</small>#}
+{#                          {% if post.view_recent_comments %}#}
+{#                                <small class="d-block mt-3"><b>Recent Comments</b> <a class="text-decoration-none" href="{% url 'single_post' post.id %}">See all</a></small>#}
+{#                           {% for comment in post.view_recent_comments %}#}
+{#                                <a class="text-decoration-none" href="{% url 'user_profile' comment.user.user.username_slug %}">#}
+{#                                  <img class="avatar avatar-32 bg-light rounded-circle text-white" src="{{ post.owner.profile_picture.url }}">#}
+{#                                  <small class="card-title d-inline-block"><span><b>{{ comment.user }}</b></span>: {{ comment.content }}</small></a><span><small> {{ comment.created_at }}</small></span>#}
+{#                           {% endfor %}#}
+{#                          {% endif %}#}
+{#                      </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#                <div class="col-lg-3 col-sm-0"></div>#}
+{#         </div>#}
+{#    {% endfor %}#}
+{#{% endif %}#}
 {% if posts %}
     {% for post in posts %}
         <div class="row mt-5">
@@ -21,12 +60,22 @@
                                     <p>{{ post.created_at }}</p>
                               </div>
                           </div>
-                          <img src="{{ post.photo.url }}" class="w-100 h-100 rounded" style="height: 40rem; width: 40rem" alt="Post Photo">
+                          <a href="{% url 'single_post' post.id %}">
+                          <img src="{{ post.photo.url }}" class="w-75 h-75 mx-auto d-block rounded" style="height: 40rem; width: 40rem" alt="Post Photo">
+                          </a>
                           <a href="{% url 'like_post' post.id %}"><i class="fa-solid fa-heart fa-2x text-primary mt-1"></i></a>
                           <a href="{% url 'single_post' post.id %}"><i class="fa-solid fa-comment fa-2x text-primary ml-2 mt-1"></i></a>
                           <p class="d-inline-block">Likes: {{ post.post_likes }}</p>
-                            <p class="card-text">{{ post.owner.user.username}}</p>
-                          <p>{{ post.description}}</p>
+                            <h3 class="card-text"><a class="text-decoration-none" href="{% url 'user_profile' post.owner.user.username_slug %}">{{ post.owner.user.username}}</a></h3>
+                          <small>{{ post.description}}</small>
+                          {% if post.view_recent_comments %}
+                                <small class="d-block mt-3"><b>Recent Comments</b> <a class="text-decoration-none" href="{% url 'single_post' post.id %}">See all</a></small>
+                           {% for comment in post.view_recent_comments %}
+                                <a class="text-decoration-none" href="{% url 'user_profile' comment.user.user.username_slug %}">
+                                  <img class="avatar avatar-32 bg-light rounded-circle text-white" src="{{ post.owner.profile_picture.url }}">
+                                  <small class="card-title d-inline-block"><span><b>{{ comment.user }}</b></span>: {{ comment.content }}</small></a><span><small> {{ comment.created_at }}</small></span>
+                           {% endfor %}
+                          {% endif %}
                       </div>
                     </div>
                 </div>
@@ -43,15 +92,16 @@
                       <div class="card-body">
                           <div class="row">
                               <div class="col-lg-6 col-sm-4">
-                                  <img class="h-50 w-50 rounded" src="{{ user.profile_picture.url }}" alt="User avatar">
-                                  <h4 class="card-title d-inline-block"><a class="text-decoration-none" href="{% url 'user_profile' user.user.username_slug %}">{{ user.user.username}}</a></h4>
+                                   <a class="text-decoration-none" href="{% url 'user_profile' user.user.username_slug %}">
+                                  <img class="avatar avatar-64 bg-light rounded-circle text-white" src="{{ user.profile_picture.url }}">
+                                  <h4 class="card-title d-inline-block ml-2 pt-1">{{ user.user.username}}</h4></a>
                               </div>
                           </div>
                           <div class="row">
-                              <div class="col-lg-12 col-sm-12">
-                                  <p>{{ user.bio }}</p>
+                              <div class="col-lg-12 col-sm-12 mt-2">
+                                  <small>{{ user.bio }}</small>
                               </div>
-                               <div class="col-lg-12 col-sm-12">
+                               <div class="col-lg-12 col-sm-12 mt-1">
                                   <b>Followers: {{ user.followers_count }}</b>
                               </div>
                               <div class="col-lg-12 col-sm-12">

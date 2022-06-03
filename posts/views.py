@@ -14,6 +14,7 @@ def create_post(request):
         description = request.POST["description"]
         post = Post(owner=user_profile, photo=photo, description=description)
         post.save()
+        return redirect('home')
     form = PostForm()
     context = {
         "form": form,

@@ -2,6 +2,8 @@ from django.db import models
 
 
 # Create your models here.
+
+
 class Post(models.Model):
     owner = models.ForeignKey("accounts.UserProfile", on_delete=models.CASCADE)
     photo = models.ImageField(upload_to='images/')
@@ -14,6 +16,10 @@ class Post(models.Model):
     def post_likes(self):
         likes = PostLikes.objects.filter(post=self).count()
         return likes
+
+    def view_recent_comments(self):
+        recent_comments = PostComments.objects.filter(post=self).order_by("created_at")[:5].all()
+        return recent_comments
 
 
 class PostLikes(models.Model):
