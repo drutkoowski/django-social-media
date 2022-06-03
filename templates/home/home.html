@@ -7,16 +7,18 @@
     {% for post in posts %}
         <div class="row mt-5">
             <div class="col-lg-2 col-sm-0"></div>
-             <div class="col-lg-6 col-sm-12 p-0">
+             <div class="col-lg-7 col-sm-12 p-0">
                  <div class="card p-0">
                       <div class="card-body">
                           <div class="row">
-                              <div class="col-lg-2 col-sm-4">
-                                  <img class="h-50 w-50 rounded" src="{{ post.owner.profile_picture.url }}" alt="User avatar">
-                                  <h4 class="card-title d-inline-block"><a class="text-decoration-none" href="{% url 'user_profile' post.owner.user.username_slug %}">{{ post.owner.user.username}}</a></h4>
+                              <div class="col-lg-8 col-sm-8">
+                                  <a class="text-decoration-none" href="{% url 'user_profile' post.owner.user.username_slug %}">
+                                  <img class="avatar avatar-32 bg-light rounded-circle text-white" src="{{ post.owner.profile_picture.url }}">
+                                  <h4 class="card-title d-inline-block">{{ post.owner.user.username}}</h4></a>
+
                               </div>
-                               <div class="col-lg-10 col-sm-4 text-right">
-                                  <p>{{ post.created_at }}</p>
+                               <div class="col-lg-4 col-sm-4">
+                                    <p>{{ post.created_at }}</p>
                               </div>
                           </div>
                           <img src="{{ post.photo.url }}" class="w-100 h-100 rounded" style="height: 40rem; width: 40rem" alt="Post Photo">
