@@ -44,6 +44,7 @@
                                     <a class="text-decoration-none" href="{% url 'user_profile' comment.user.user.username_slug %}">
                                       <img class="avatar avatar-32 bg-light rounded-circle text-white" src="{{ post.owner.profile_picture.url }}">
                                       <small class="card-title d-inline-block"><span><b>{{ comment.user }}</b></span>: {{ comment.content }}</small></a><span><small> {{ comment.created_at }}</small></span>
+                                   <br>
                                {% endfor %}
                               {% endif %}
                           </div>
@@ -53,41 +54,52 @@
              </div>
             {% endfor %}
         {% elif users %}
-    {% for user in users %}
-    <div class="row mt-5">
-            <div class="col-lg-2 col-sm-0"></div>
-             <div class="col-lg-6 col-sm-12 p-0">
-                 <div class="card p-0">
+            {% for user in users %}
+            <div class="row mt-5">
+                    <div class="col-lg-2 col-sm-0"></div>
+                     <div class="col-lg-6 col-sm-12 p-0">
+                         <div class="card p-0">
 
-                      <div class="card-body">
-                          <div class="row">
-                              <div class="col-lg-6 col-sm-4">
-                                   <a class="text-decoration-none" href="{% url 'user_profile' user.user.username_slug %}">
-                                  <img class="avatar avatar-64 bg-light rounded-circle text-white" src="{{ user.profile_picture.url }}">
-                                  <h4 class="card-title d-inline-block ml-2 pt-1">{{ user.user.username}}</h4></a>
+                              <div class="card-body">
+                                  <div class="row">
+                                      <div class="col-lg-6 col-sm-4">
+                                           <a class="text-decoration-none" href="{% url 'user_profile' user.user.username_slug %}">
+                                          <img class="avatar avatar-64 bg-light rounded-circle text-white" src="{{ user.profile_picture.url }}">
+                                          <h4 class="card-title d-inline-block ml-2 pt-1">{{ user.user.username}}</h4></a>
+                                      </div>
+                                  </div>
+                                  <div class="row">
+                                      <div class="col-lg-12 col-sm-12 mt-2">
+                                          <small>{{ user.bio }}</small>
+                                      </div>
+                                       <div class="col-lg-12 col-sm-12 mt-1">
+                                          <b>Followers: {{ user.followers_count }}</b>
+                                      </div>
+                                      <div class="col-lg-12 col-sm-12">
+                                          <b>Following: {{ user.following_count }}</b>
+                                      </div>
+                                       <div class="col-lg-12 col-sm-12">
+                                          <b>Posts: {{ user.posts_count }}</b>
+                                      </div>
+                                  </div>
                               </div>
-                          </div>
-                          <div class="row">
-                              <div class="col-lg-12 col-sm-12 mt-2">
-                                  <small>{{ user.bio }}</small>
-                              </div>
-                               <div class="col-lg-12 col-sm-12 mt-1">
-                                  <b>Followers: {{ user.followers_count }}</b>
-                              </div>
-                              <div class="col-lg-12 col-sm-12">
-                                  <b>Following: {{ user.following_count }}</b>
-                              </div>
-                               <div class="col-lg-12 col-sm-12">
-                                  <b>Posts: {{ user.posts_count }}</b>
-                              </div>
-                          </div>
-                      </div>
 
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-0"></div>
-         </div>
-    {% endfor %}
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-0"></div>
+                 </div>
+            {% endfor %}
+        {% elif not users %}
+        <div class="row mt-5">
+                    <div class="col-lg-2 col-sm-0"></div>
+                     <div class="col-lg-6 col-sm-12 p-0">
+                         <div class="card p-0">
+                             <div class="card-title text-center mt-4"><h3>We could not match your query.</h3></div>
+                            <div class="card-body"><p><b>Why?</b></p>
+                                <p>There are no users with desired name</p></div>
+                         </div>
+                     </div>
+        </div>
 {% endif %}
 
 

@@ -51,7 +51,7 @@
 
 {% else %}
     {% if get_followed_posts %}
-     {% for post in get_followed_posts %}
+        {% for post in get_followed_posts %}
         <div class="row mt-5">
             <div class="col-lg-2 col-sm-0"></div>
              <div class="col-lg-7 col-sm-12 p-0">
@@ -88,6 +88,17 @@
                 <div class="col-lg-3 col-sm-0"></div>
          </div>
     {% endfor %}
+           {% elif not users %}
+        <div class="row mt-5">
+                    <div class="col-lg-2 col-sm-0"></div>
+                     <div class="col-lg-6 col-sm-12 p-0">
+                         <div class="card p-0">
+                             <div class="card-title text-center mt-4"><h3>We could not match your query.</h3></div>
+                            <div class="card-body"><p><b>Why?</b></p>
+                                <p>There are no users with desired name</p></div>
+                         </div>
+                     </div>
+        </div>
 {% endif %}
 
     </div>
