@@ -34,6 +34,7 @@ class PostLikes(models.Model):
     def __str__(self):
         return f"{self.user.user_id}"
 
+
     class Meta:
         verbose_name_plural = "Post Likes"
 
