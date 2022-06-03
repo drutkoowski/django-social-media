@@ -21,4 +21,6 @@ def get_followed_posts(request):
     user = request.user
     userprofile = UserProfile.objects.filter(user=user).first()
     followed_posts = Post.objects.filter(owner__followed_to=userprofile).all()
+    print(followed_posts)
     return dict(get_followed_posts=followed_posts)
+

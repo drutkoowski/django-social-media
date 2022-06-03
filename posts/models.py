@@ -22,6 +22,7 @@ class Post(models.Model):
         return recent_comments
 
 
+
 class PostLikes(models.Model):
     user = models.ForeignKey("accounts.UserProfile", on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
