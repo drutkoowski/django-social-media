@@ -1,11 +1,11 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import UserForm, UserSignUpForm
+from .forms import UserForm, UserSignUpForm, EditProfileForm
 from accounts.models import Account, UserProfile
 from django.contrib import messages, auth
 from posts.models import Post
 from followers.models import UserFollowing
-from django.contrib.auth.models import AnonymousUser
+
 
 
 # Create your views here.
@@ -145,3 +145,22 @@ def search(request):
 
 def home_friends(request):
     return render(request, "home/home_followed_only.html")
+
+
+@login_required(login_url='login')
+def edit_profile(request):
+    userprofile = get_object_or_404(UserProfile, user=request.user)
+    if request.method == "POST":
+        user_profile_edit_form = EditProfileForm(request.POST, instance=userprofile)
+        if user_profile_edit_form.is_valid():
+            user_profile_edit_form.save()
+            messages.success(request, 'Your profile has been updated!')
+            return redirect('edit_profile')
+    else:
+        user_profile_edit_form = EditProfileForm(instance=userprofile)
+
+    context = {
+        "form": user_profile_edit_form,
+    }
+
+    return render(request, "accounts/edit_profile.html", context)

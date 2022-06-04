@@ -40,3 +40,14 @@ class UserSignUpForm(forms.ModelForm):
         self.fields["password"].widget.attrs["placeholder"] = "Password"
         for field in self.fields:
             self.fields[field].widget.attrs['class'] = 'form-control'
+
+
+class EditProfileForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ('profile_picture', 'bio')
+
+    def __init__(self, *args, **kwargs):
+        super(EditProfileForm, self).__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].widget.attrs['class'] = 'form-control'

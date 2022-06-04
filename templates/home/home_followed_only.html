@@ -88,7 +88,8 @@
                 <div class="col-lg-3 col-sm-0"></div>
          </div>
     {% endfor %}
-           {% elif not users %}
+        {% else %}
+           {% if not users and "search" in request.path %}
         <div class="row mt-5">
                     <div class="col-lg-2 col-sm-0"></div>
                      <div class="col-lg-6 col-sm-12 p-0">
@@ -99,7 +100,19 @@
                          </div>
                      </div>
         </div>
-{% endif %}
+        {% elif not get_followed_post %}
+          <div class="row mt-5">
+                    <div class="col-lg-2 col-sm-0"></div>
+                     <div class="col-lg-6 col-sm-12 p-0">
+                         <div class="card p-0">
+                             <div class="card-title text-center mt-4"><h3>We could not match your query.</h3></div>
+                            <div class="card-body"><p><b>Why?</b></p>
+                                <p>There are no recent posts from your friends.</p></div>
+                         </div>
+                     </div>
+                </div>
+               {% endif %}
+        {% endif %}
 
     </div>
 </div>
