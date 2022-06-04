@@ -28,10 +28,10 @@ def like_post(request, post_id):
     is_liked_already = PostLikes.objects.filter(post=post, user=liking_user_profile).first()
     if is_liked_already:
         is_liked_already.delete()
-        return redirect(request.META.get('HTTP_REFERER', 'home'))
+        return redirect(request.META.get('HTTP_REFERER', 'home')+f"#{post.id}")
     post_like = PostLikes(user=liking_user_profile, post=post)
     post_like.save()
-    return redirect(request.META.get('HTTP_REFERER', 'home'))
+    return redirect(request.META.get('HTTP_REFERER', 'home')+f"#{post.id}")
 
 
 def single_post(request, post_id):

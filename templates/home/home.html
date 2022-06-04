@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+
 {% block content %}
     {% include 'includes/navbar.html' %}
 <div id="home-content" class="container mt-5">
@@ -19,11 +20,11 @@
 
                                   </div>
                                    <div class="col-lg-4 col-sm-4">
-                                        <p>{{ post.created_at }}</p>
+                                        <p id="{{ post.pk }}">{{ post.created_at }}</p>
                                   </div>
                               </div>
                               <a href="{% url 'single_post' post.id %}">
-                              <img src="{{ post.photo.url }}" class="w-100 h-100 rounded mx-auto d-block rounded" style="height: 40rem; width: 40rem" alt="Post Photo">
+                              <img src="{{ post.photo.url }}" class="w-100 h-100 rounded mx-auto d-block rounded" style="height: 20rem; width: 40rem" alt="Post Photo">
                               </a>
                                 {% if post in get_liked_posts_by_user %}
                                     <a href="{% url 'like_post' post.id %}"><i class="fa-solid fa-heart fa-2x text-danger mt-1"></i></a>

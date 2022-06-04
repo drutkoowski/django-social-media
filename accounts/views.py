@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import UserForm, UserSignUpForm, EditProfileForm
 from posts.forms import CommentForm
@@ -6,6 +7,7 @@ from accounts.models import Account, UserProfile
 from django.contrib import messages, auth
 from posts.models import Post
 from followers.models import UserFollowing
+
 
 
 
