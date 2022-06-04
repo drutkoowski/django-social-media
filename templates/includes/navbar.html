@@ -35,28 +35,33 @@ $(window).on("load resize", function() {
   transform: translateY(3px);
 }
 </style>
-<nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light container" style="z-index: 2000">
-        <a href="{% url 'home' %}"><img class="w-10 h-10 rounded text-center" src="https://www.instagram.com/static/images/web/logged_out_wordmark.png/7a252de00b20.png" alt=""></a>
+<nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light" style="z-index: 2000;border-bottom: solid 2px #e1e6ed;">
+    <div class="container">
+        <a href="{% url 'home_friends' %}"><img class="w-10 h-10 rounded text-center" src="https://www.instagram.com/static/images/web/logged_out_wordmark.png/7a252de00b20.png" alt=""></a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto">
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav ml-auto">
-        <li class="nav-item mt-1">
-            <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="{% url 'user_profile' user.username_slug %}"> <img class="avatar avatar-32 bg-light rounded-circle bg-primary text-white" src="{{ get_avatar }}"></a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdown1">
-                <a class="dropdown-item" href="{% url 'user_profile' user.username_slug %}">Profile</a>
-                <a class="dropdown-item" href="{% url 'edit_profile' %}"><i class="fa-solid fa-pen-to-square text-primary"></i> Edit Profile</a>
-                  <a class="dropdown-item" href="{% url 'create_post' %}"><i class="fa-solid fa-square-plus text-primary"></i> Add post</a>
-                <div class="dropdown-divider"></div>
-                 <a class="text-decoration-none nav-link text-primary" href="{% url 'logout' %}"><i class="fa-solid fa-power-off"></i> Logout</a>
-              </div>
+                <li class="nav-item ml-lg-1" style="margin-top: 1px">
+                    <a href="{% url 'home_friends' %}"><i class="fa-solid fa-house-user fa-2x mt-1 pt-1 text-primary bg-light"></i></a>
+                </li>
+                <li class="nav-item ml-lg-1" style="margin-top: 2px">
+                    <a href="{% url 'home' %}"><i class="fa-solid fa-compass fa-2x mt-1 pt-1 text-primary bg-light"></i></a>
+                </li>
+                <li class="nav-item mt-1 ">
+                    <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="{% url 'user_profile' user.username_slug %}"> <img class="avatar avatar-32 bg-light rounded-circle bg-primary text-white" src="{{ get_avatar }}"></a>
+                      <div class="dropdown-menu" aria-labelledby="navbarDropdown1">
+                        <a class="dropdown-item" href="{% url 'user_profile' user.username_slug %}"><i class="fa-solid fa-user text-primary"></i> Profile</a>
+                        <a class="dropdown-item" href="{% url 'edit_profile' %}"><i class="fa-solid fa-pen-to-square text-primary"></i> Edit Profile</a>
+                          <a class="dropdown-item" href="{% url 'create_post' %}"><i class="fa-solid fa-square-plus text-primary"></i> Add post</a>
+                        <div class="dropdown-divider"></div>
+                         <a class="text-decoration-none nav-link text-primary" href="{% url 'logout' %}"><i class="fa-solid fa-power-off"></i> Logout</a>
+                      </div>
+
         </li>
-
-      </li>
-
     </ul>
       <form action="{% url 'search' %}" class="search mt-2 form-inline my-2 my-lg-0" method="get">
           {% csrf_token %}
@@ -64,4 +69,5 @@ $(window).on("load resize", function() {
           <button class="btn btn-primary my-2 my-sm-0 submit" type="submit">Search</button>
     </form>
   </div>
+</div>
     </nav>

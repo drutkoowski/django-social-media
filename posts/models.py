@@ -25,6 +25,10 @@ class Post(models.Model):
         recent_comments = PostComments.objects.filter(post=self).order_by("created_at")[:5].all()
         return recent_comments
 
+    def all_posts_likes(self):
+        likes = PostLikes.objects.filter(post=self).all()
+        return likes
+
 
 class PostLikes(models.Model):
     user = models.ForeignKey("accounts.UserProfile", on_delete=models.CASCADE)
@@ -33,7 +37,6 @@ class PostLikes(models.Model):
 
     def __str__(self):
         return f"{self.user.user_id}"
-
 
     class Meta:
         verbose_name_plural = "Post Likes"

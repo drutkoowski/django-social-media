@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import UserForm, UserSignUpForm, EditProfileForm
+from posts.forms import CommentForm
 from accounts.models import Account, UserProfile
 from django.contrib import messages, auth
 from posts.models import Post
@@ -20,7 +21,7 @@ def login(request):
             if user is not None:
                 auth.login(request, user)
                 messages.success(request, "You are now logged in")
-                return redirect("home")
+                return redirect("home_friends")
             else:
                 messages.error(request, "Invalid login credentials")
                 return redirect("login")
@@ -73,11 +74,13 @@ def signup(request):
 
 @login_required(login_url='login')
 def home(request):
+    form = CommentForm()
     posts = Post.objects.order_by("-created_at").all()
     all_posts = sorted(posts, key=lambda ur: (ur.post_likes(), ur.post_comments()))
     all_posts.reverse()
     context = {
         "posts": all_posts,
+        "form":form,
     }
     return render(request, "home/home.html", context)
 
