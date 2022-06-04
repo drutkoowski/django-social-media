@@ -107,14 +107,6 @@ def profile_page(request, username_slug):
             return redirect('user_profile', username_slug)
     current_user = request.user
     user_profile = get_object_or_404(UserProfile, user__username_slug=username_slug)
-    #
-    post = Post.objects.filter(owner__user__username__iexact="rutko").all()
-    all_liked = user_profile.get_all_liked_posts()
-    for like in all_liked:
-        if like in post:
-            print("asdasdas")
-
-    #
     current_user_profile_to_check = UserProfile.objects.filter(user__username=current_user.username).first()
     is_followed_by_current = UserFollowing.objects.filter(followed_by=current_user_profile_to_check,
                                                           followed_to=user_profile).first()

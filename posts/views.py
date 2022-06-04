@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .forms import PostForm, CommentForm
 from .models import Post, PostLikes, PostComments
 from accounts.models import UserProfile
@@ -56,3 +56,30 @@ def add_comment(request, post_id):
         comment = PostComments(user=current_user_profile, post=post, content=content)
         comment.save()
     return redirect('single_post', post_id)
+
+
+def edit_post(request, post_id):
+    if request.method == "POST":
+        post = get_object_or_404(Post, pk=post_id)
+        form = PostForm(request.POST, instance=post)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Your post has been updated!')
+            return redirect('edit_profile')
+    post = get_object_or_404(Post, pk=post_id)
+    form = PostForm(instance=post)
+    context = {
+        "form": form,
+        "post": post,
+    }
+    return render(request, "posts/edit_post.html", context)
+
+
+def delete_post(request, post_id):
+    user = request.user
+    userprofile = UserProfile.objects.get(user=user)
+    post = get_object_or_404(Post, pk=post_id)
+    if post:
+        post.delete()
+    return redirect('user_profile', userprofile.user.username_slug)
+

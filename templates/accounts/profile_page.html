@@ -43,6 +43,14 @@
                 <div class="col-lg-4 col-sm-12">
                 <div class="card mt-4">
                               <div class="card-body">
+                              <div class="row">
+                                  <div class="col-12 text-right">
+                                      <a href="{% url 'edit_post' post.id %}"><i class="fa-solid fa-pen text-primary mb-4 mr-2"></i></a>
+                                      <span>
+                                        <a href="{% url 'delete_post' post.id %}"><i class="fa-solid fa-trash-can text-primary mb-4"></i></a>
+                                      </span>
+                                  </div>
+                              </div>
                                   <a href="{% url 'single_post' post.id %}"><img src="{{ post.photo.url }}" class="rounded img-fluid" style="height: 20rem; width: 20rem" alt="Post Photo"></a>
                                   <a class="text-decoration-none" href="{% url 'user_profile' post.owner.user.username_slug %}">
                                     <h4 class="card-title d-inline-block mt-2">{{ post.owner.user.username}}</h4>

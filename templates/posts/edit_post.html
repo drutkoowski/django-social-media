@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    {% include 'includes/navbar.html' %}
+    {% include 'includes/alerts.html' %}
+<div class="container mt-5">
+  <div class="row mt-5">
+        <div class="col-lg-2 col-sm-0"></div>
+
+         <div class="col-lg-6 col-sm-12 p-0">
+             <form action="{% url 'edit_post' post.id %}" method="post" enctype="multipart/form-data">
+             {% csrf_token %}
+             <div class="card p-0 mt-5">
+                  <div class="card-body p-0 rounded">
+                      <img id="photo" class="w-100" style="height: 30rem; width: 40rem" src="{{ post.photo.url }}">
+                  </div>
+                </div>
+               {% for field in form %}
+                        <div class="fieldWrapper mt-4" style="max-height: 10rem">
+                            {{ field.errors }}
+                            {{ field }}
+                        </div>
+                    {% endfor %}
+                          <button class="btn btn-submit btn-primary btn-block mt-2">Edit post</button>
+             </form>
+            </div>
+            <div class="col-lg-3 col-sm-0"></div>
+         </div>
+
+    </div>
+</div>
+
+{% endblock %}
