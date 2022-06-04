@@ -1,7 +1,9 @@
 from django.contrib.auth.base_user import BaseUserManager, AbstractBaseUser
 from django.db import models
 from followers.models import UserFollowing
-from posts.models import Post
+from posts.models import Post, PostLikes
+
+
 # Create your models here.
 
 
@@ -99,3 +101,11 @@ class UserProfile(models.Model):
             user_profiles_list.append(user.followed_to.user.username)
         posts_of_followings = Post.objects.filter(owner__user__username__in=user_profiles_list).all()
         return posts_of_followings
+
+    def get_all_liked_posts(self):
+        all_liked = PostLikes.objects.filter(user=self).all()
+        list_of_id_posts_liked = []
+        for like in all_liked:
+            list_of_id_posts_liked.append(like.post_id)
+        posts_liked = Post.objects.filter(pk__in=list_of_id_posts_liked).all()
+        return posts_liked

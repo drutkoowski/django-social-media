@@ -23,11 +23,15 @@
                                   </div>
                               </div>
                               <a href="{% url 'single_post' post.id %}">
-                              <img src="{{ post.photo.url }}" class="w-75 h-75 mx-auto d-block rounded" style="height: 40rem; width: 40rem" alt="Post Photo">
+                              <img src="{{ post.photo.url }}" class="w-100 h-100 rounded mx-auto d-block rounded" style="height: 40rem; width: 40rem" alt="Post Photo">
                               </a>
-                              <a href="{% url 'like_post' post.id %}"><i class="fa-solid fa-heart fa-2x text-primary mt-1"></i></a>
-                              <a href="{% url 'single_post' post.id %}"><i class="fa-solid fa-comment fa-2x text-primary ml-2 mt-1"></i></a>
-                              <p>Likes: {{ post.post_likes }}</p>
+                                {% if post in get_liked_posts_by_user %}
+                                    <a href="{% url 'like_post' post.id %}"><i class="fa-solid fa-heart fa-2x text-danger mt-1"></i></a>
+                               {% else %}
+                               <a href="{% url 'like_post' post.id %}"><i class="fa-regular fa-heart fa-2x mt-1 text-primary"></i></a>
+                            {% endif %}
+                              <a href="{% url 'single_post' post.id %}"><i class="fa-regular fa-comment fa-2x text-primary ml-2 mt-1"></i></a>
+                          <p>Likes: {{ post.post_likes }}</p>
                                 <h3 class="card-text"><a class="text-decoration-none" href="{% url 'user_profile' post.owner.user.username_slug %}">{{ post.owner.user.username}}</a></h3>
                               <small>{{ post.description}}</small>
                               {% if post.view_recent_comments %}

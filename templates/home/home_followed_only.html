@@ -54,7 +54,7 @@
                           <div class="row">
                               <div class="col-lg-8 col-sm-8">
                                   <a class="text-decoration-none" href="{% url 'user_profile' post.owner.user.username_slug %}">
-                                  <img class="avatar avatar-32 bg-light rounded-circle text-white" src="{{ post.owner.profile_picture.url }}">
+                                  <img class="avatar avatar-32 bg-light rounded-circle text-white" src="{{ post.owner.profile_picture.url }}" alt="Post photo">
                                   <h4 class="card-title d-inline-block">{{ post.owner.user.username}}</h4></a>
                             
                               </div>
@@ -62,9 +62,13 @@
                                     <p>{{ post.created_at }}</p>
                               </div>
                           </div>
-                          <img src="{{ post.photo.url }}" class="w-100 h-100 rounded" style="height: 40rem; width: 40rem" alt="Post Photo">
-                          <a href="{% url 'like_post' post.id %}"><i class="fa-solid fa-heart fa-2x text-primary mt-1"></i></a>
-                          <a href="{% url 'single_post' post.id %}"><i class="fa-solid fa-comment fa-2x text-primary ml-2 mt-1"></i></a>
+                          <a href="{% url 'single_post' post.id %}"><img src="{{ post.photo.url }}" class="w-100 h-100 rounded" style="height: 40rem; width: 40rem" alt="Post Photo"></a>
+                                {% if post in get_liked_posts_by_user %}
+                                    <a href="{% url 'like_post' post.id %}"><i class="fa-solid fa-heart fa-2x text-danger mt-1"></i></a>
+                               {% else %}
+                                    <a href="{% url 'like_post' post.id %}"><i class="fa-regular fa-heart fa-2x text-primary mt-1"></i></a>
+                            {% endif %}
+                          <a href="{% url 'single_post' post.id %}"><i class="fa-regular fa-comment fa-2x text-primary ml-2 mt-1"></i></a>
                           <p class="d-inline-block">Likes: {{ post.post_likes }}</p>
                             <h3 class="card-text"><a class="text-decoration-none" href="{% url 'user_profile' post.owner.user.username_slug %}">{{ post.owner.user.username}}</a></h3>
                           <small>{{ post.description}}</small>
@@ -76,6 +80,24 @@
                                   <small class="card-title d-inline-block"><span><b>{{ comment.user }}</b></span>: {{ comment.content }}</small></a><span><small> {{ comment.created_at }}</small></span>
                            {% endfor %}
                           {% endif %}
+                       <div>
+                           <form action="{% url 'add_comment' post.id %}" method="post">
+                               {% csrf_token %}
+                               {% for field in form %}
+                                   <div class="row mt-4">
+                                        <a class="d-inline-block ml-3" href="{% url 'user_profile' user.username_slug %}"> <img class="avatar avatar-32 bg-light rounded-circle bg-primary text-white d-inline-block" src="{{ get_avatar }}"></a>
+                                        <div class="d-inline-block ml-4">
+                                            {{ field.errors }}
+                                            {{ field }}
+                                   </div>
+                                       {% endfor %}
+                                    <div class="d-inline-block ml-4">
+                                       <button class="btn btn-submit btn-primary btn-block">Comment</button>
+                                    </div>
+                                   </div>
+
+                            </form>
+                        </div>
                       </div>
                     </div>
                 </div>
