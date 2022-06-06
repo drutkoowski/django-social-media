@@ -34,9 +34,11 @@
                           <hr>
                       <h4>Comments</h4>
                       {% for comment in comments %}
-                                <a class="text-decoration-none" href="{% url 'user_profile' comment.user.user.username_slug %}">
+                          <div class="row">
+                                    <a class="text-decoration-none" href="{% url 'user_profile' comment.user.user.username_slug %}">
                                   <img class="avatar avatar-32 bg-light rounded-circle text-white" src="{{ post.owner.profile_picture.url }}">
-                                  <small class="card-title d-inline-block"><span><b>{{ comment.user }}</b></span>: {{ comment.content }}</small></a><span><small> {{ comment.created_at }}</small></span>
+                                  <small class="card-title d-inline-block"><span><b>{{ comment.user }}</b></span>: {{ comment.content }}</small></a><span><small class="ml-2"> {{ comment.created_at }}</small></span>
+                        </div>
                       {% endfor %}
                         <div>
                            <form action="{% url 'add_comment' post.id %}" method="post">
