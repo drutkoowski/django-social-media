@@ -170,6 +170,7 @@ def edit_profile(request):
 
     context = {
         "form": user_profile_edit_form,
+        "user_profile": userprofile,
     }
 
     return render(request, "accounts/edit_profile.html", context)
