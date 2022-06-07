@@ -5,13 +5,13 @@
     {% include 'includes/alerts.html' %}
     <div class="container mt-5">
         <div class="row">
-            <div class="col-md-12 mt-5">
+            <div class="col-md-12 mt-5 p-0">
                 <h3>Your conversations</h3>
             </div>
         </div>
 
         <div class="row mt-3">
-            <div class="col-md-12">
+            <div class="col-md-12 p-0">
                 <form action="{% url 'create-thread' %}" method="get">
                     <button class="btn btn-primary" type="submit">
                         Create a New Conversation
@@ -21,11 +21,45 @@
         </div>
 
         {% for thread in threads.all %}
-            <div class="row mt-5 mb-3">
-                <div class="card col-md-12 p-5 shadow-sm">
-                    <h5>{{ thread.user }} - {{ thread.receiver }}</h5>
-                    <a href="{% url 'thread' thread.pk %}" class="stretched-link"></a>
-                </div>
+            <div class="row mt-5 mb-3 card shadow-sm rounded">
+             <a href="{% url 'thread' thread.pk %}" class="text-decoration-none">
+                    <div class="row mt-4 mb-4">
+                                <div class="col-lg-2 col-sm-6 mt-4 text-left">
+                                      <div class="p-3">
+                                          <img class="avatar avatar-128 bg-light rounded-circle text-white" src="{{ thread.user.profile_picture.url }}">
+                                      </div>
+                                </div>
+
+                                <div class="col-lg-10 col-sm-6 mt-4">
+                                      <div class="row text-left mt-4">
+                                          <div class="col-12 p-3">
+                                              <h2 class="text-primary">{{ thread.receiver }}</h2>
+                                          </div>
+                                      </div>
+                                    {% if thread.get_last_message and thread.get_last_message_owner %}
+                                        <div class="row">
+                                            <div class="col-12 p-3">
+                                                <small style="font-size: 1.2rem">
+                                                    {% if userprofile == thread.get_last_message_owner %}
+                                                        You sent a message: {{ thread.get_last_message }}
+                                                    {% elif userprofile != thread.get_last_message_owner %}
+                                                        {{ thread.get_last_message_owner }} sent you a message: {{ thread.get_last_message }}
+                                                    {% endif %}
+                                                </small>
+                                            </div>
+                                        </div>
+                                    {% else %}
+                                        <div class="row">
+                                            <div class="col-12 p-3">
+                                                <small class="text-danger" style="font-size: 1.2rem">
+                                                    You have no messages already, start the conversation now!
+                                                </small>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                        </div>
+                 </a>
             </div>
         {% endfor %}
 

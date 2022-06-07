@@ -4,8 +4,9 @@ from accounts.models import UserProfile
 from inbox.forms import MessageForm, ThreadForm
 from inbox.models import ThreadModel, MessageModel
 from django.contrib import messages
-# Create your views here.
 
+
+# Create your views here.
 
 
 def inbox(request):
@@ -13,7 +14,8 @@ def inbox(request):
     threads = ThreadModel.objects.filter(Q(user=user_profile) | Q(receiver=user_profile))
 
     context = {
-        "threads": threads
+        "threads": threads,
+        "userprofile": user_profile,
     }
     return render(request, "inbox/inbox.html", context)
 
@@ -33,6 +35,7 @@ def thread(request, pk):
 
 
 def create_thread(request):
+    current_user_profile = UserProfile.objects.get(user=request.user)
     if request.method == "POST":
         form = ThreadForm(request.POST)
 
@@ -55,9 +58,11 @@ def create_thread(request):
             return redirect('create-thread')
     form = ThreadForm()
     context = {
-        "form": form
+        "form": form,
+        "user_profile": current_user_profile,
     }
     return render(request, "inbox/create_thread.html", context)
+
 
 def create_message(request, pk):
     if request.method == "POST":
@@ -74,8 +79,6 @@ def create_message(request, pk):
             message.sender_user = requested_user_profile
             message.receiver_user = receiver
             message.save()
-            print("yaaaha")
-        print("xxx")
 
         # notification = Notification.objects.create(
         #     notification_type=4,

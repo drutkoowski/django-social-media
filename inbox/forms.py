@@ -5,6 +5,12 @@ from .models import MessageModel
 class ThreadForm(forms.Form):
     username = forms.CharField(label='', max_length=100)
 
+    def __init__(self, *args, **kwargs):
+        super(ThreadForm, self).__init__(*args, **kwargs)
+        self.fields["username"].widget.attrs["placeholder"] = "Enter username"
+        for field in self.fields:
+            self.fields[field].widget.attrs['class'] = 'form-control'
+
 
 class MessageForm(forms.ModelForm):
     body = forms.CharField(label='', max_length=1000)

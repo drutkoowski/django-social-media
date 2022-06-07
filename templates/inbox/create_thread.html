@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-
 {% block content %}
     {% include 'includes/navbar.html' %}
     {% include 'includes/alerts.html' %}
@@ -7,12 +6,54 @@
 
     <div class="row">
         <div class="col-md-12 p-5">
-            <h3>Choose who you want to talk with</h3>
+            <h2>Choose who you want to talk with</h2>
         </div>
     </div>
 
-    <div class="row justify-content-center mt-3 mb-5">
-        <div class="col-md-5 col-sm-12">
+  <div class="row">
+        <div class="col-md-12 pl-5 pr-5">
+            <h5>Suggestions based on your follows and likes</h5>
+        </div>
+    </div>
+
+    {% if user_profile.following_suggestions %}
+            {% for user in user_profile.following_suggestions %}
+            <div class="row mt-2">
+                    <div class="col-lg-2 col-sm-0"></div>
+                     <div class="col-lg-6 col-sm-12 p-0">
+                         <div class="card p-0">
+                              <div class="card-body">
+                                  <div class="row">
+                                      <div class="col-lg-6 col-sm-4">
+                                           <a class="text-decoration-none" href="">
+                                          <img class="avatar avatar-64 bg-light rounded-circle text-white" src="{{ user.profile_picture.url }}">
+                                          <h4 class="card-title d-inline-block ml-2 pt-1">{{ user.user.username}}</h4></a>
+                                      </div>
+                                  </div>
+                                  <div class="row">
+                                      <div class="col-lg-12 col-sm-12 mt-2">
+                                          <small>{{ user.bio }}</small>
+                                      </div>
+                                       <div class="col-lg-12 col-sm-12 mt-1">
+                                          <b>Followers: {{ user.followers_count }}</b>
+                                      </div>
+                                      <div class="col-lg-12 col-sm-12">
+                                          <b>Following: {{ user.following_count }}</b>
+                                      </div>
+                                       <div class="col-lg-12 col-sm-12">
+                                          <b>Posts: {{ user.posts_count }}</b>
+                                      </div>
+                                  </div>
+                              </div>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-0"></div>
+                 </div>
+            {% endfor %}
+    {% endif %}
+    <div class="row mt-5 mb-5">
+        <div class="col-md-5 col-sm-12  pl-5 pr-5">
             {% if messages %}
                 {% for message in messages %}
                     <div class="alert alert-danger">
@@ -23,7 +64,7 @@
 
             <form action="" method="POST">
                 {% csrf_token %}
-                <p>Enter the username of receiver below</p>
+                <p>... Or enter the username of receiver below</p>
                 {{ form }}
                 <div class="d-grid gap-2">
                     <button class="btn btn-primary mt-3" type="submit">

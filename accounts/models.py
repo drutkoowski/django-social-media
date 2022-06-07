@@ -1,3 +1,4 @@
+from random import choice
 from django.contrib.auth.base_user import BaseUserManager, AbstractBaseUser
 from django.db import models
 from followers.models import UserFollowing
@@ -109,3 +110,14 @@ class UserProfile(models.Model):
             list_of_id_posts_liked.append(like.post_id)
         posts_liked = Post.objects.filter(pk__in=list_of_id_posts_liked).all()
         return posts_liked
+
+    def following_suggestions(self):
+        following_suggestions = []
+        following_users = UserFollowing.objects.filter(followed_by=self).order_by("-created_at").distinct()[:5]
+        for followed in following_users:
+            following_suggestions.append(followed.followed_to)
+        all_liked = PostLikes.objects.filter(user=self).values_list('user', flat=True).distinct()[:3]
+        random_liked_userprofile_suggestion_query_set = UserProfile.objects.filter(pk__in=all_liked).all()
+        for like in random_liked_userprofile_suggestion_query_set:
+            following_suggestions.append(like)
+        return following_suggestions
