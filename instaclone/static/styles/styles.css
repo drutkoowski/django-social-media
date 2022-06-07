@@ -4,7 +4,7 @@
 	text-align: center;
 }
 
-.sent-message {
+.received-message {
 	background-color: #f3f3f3;
 	border-radius: 30px;
 	padding: 10px 25px;
@@ -12,7 +12,7 @@
 
 }
 
-.received-message {
+.sent-message {
 	background-color: rgb(1,196,255);
 	color: #fff;
 	border-radius: 30px;
