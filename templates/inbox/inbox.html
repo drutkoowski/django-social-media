@@ -41,9 +41,9 @@
                                             <div class="col-12 p-3">
                                                 <small style="font-size: 1.2rem">
                                                     {% if userprofile == thread.get_last_message_owner %}
-                                                        You sent a message: {{ thread.get_last_message }}
+                                                        You sent a message: {% if thread.get_last_message|length > 25%}{{ thread.get_last_message |slice:":25"}} ...{% else %}{{ thread.get_last_message}}{% endif %}
                                                     {% elif userprofile != thread.get_last_message_owner %}
-                                                        {{ thread.get_last_message_owner }} sent you a message: {{ thread.get_last_message }}
+                                                        {{ thread.get_last_message_owner }} sent you a message: {% if thread.get_last_message|length > 25%}{{ thread.get_last_message |slice:":25"}} ...{% else %}{{ thread.get_last_message}}{% endif %}
                                                     {% endif %}
                                                 </small>
                                             </div>

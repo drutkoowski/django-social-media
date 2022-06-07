@@ -19,3 +19,9 @@ class MessageForm(forms.ModelForm):
     class Meta:
         model = MessageModel
         fields = ['body', 'image']
+
+    def __init__(self, *args, **kwargs):
+        super(MessageForm, self).__init__(*args, **kwargs)
+        self.fields["body"].widget.attrs["placeholder"] = "Your message"
+        for field in self.fields:
+            self.fields[field].widget.attrs['class'] = 'form-control'

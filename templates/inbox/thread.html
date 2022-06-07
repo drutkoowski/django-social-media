@@ -3,17 +3,7 @@
     {% include 'includes/navbar.html' %}
     {% include 'includes/alerts.html' %}
 <div class="container mt-5">
-        <div class="row">
-            <div class="card col-md-12 mt-5 p-3 shadow-sm">
-                {% if thread.receiver == request.user %}
-                    <h5>@{{ thread.user }}</h5>
-                {% else %}
-                    <h5>@{{ thread.receiver }}</h5>
-                {% endif %}
-            </div>
-        </div>
-
-        {% if message_list.all.count == 0 %}
+ {% if message_list.all.count == 0 %}
             <div class="row my-5">
                 <div class="col-md-12">
                     <p class="empty-text">
@@ -21,7 +11,18 @@
                     </p>
                 </div>
             </div>
-        {% endif %}
+
+  {% else %}
+        <div class="row pl-0 pr-0 my-1">
+            <div class="card col-md-12 mt-5 shadow-sm">
+                {% if thread.receiver == request.user %}
+                    <h5 class="mt-3 mb-3">Your conversation with <a class="text-decoration-none" href="{% url 'user_profile' thread.user.user.username_slug %}">@{{ thread.user }}</a></h5>
+                {% else %}
+                    <h5 class="mt-3 mb-3">Your conversation with <a class="text-decoration-none" href="{% url 'user_profile' thread.user.user.username_slug %}">@{{ thread.receiver }}</a></h5>
+                {% endif %}
+            </div>
+        </div>
+<div style="max-height: 50vh;overflow-y:auto">
     {% for message in message_list %}
         <div class="row">
             {% if message.sender_user == current_user_profile %}
@@ -37,28 +38,31 @@
             </div>
                 {% elif message.receiver_user == current_user_profile %}
                     <div class="col-md-12 my-1 offset-6">
+
                     {% if message.image %}
                         <div class="message-receiver-container ms-auto">
                             <img src="{{ message.image.url }}" alt="Message" class="message-image">
                         </div>
                      {% endif %}
                         <div class="received-message my-3">
-                            <p>{{ message.body }}</p>
+                            <p>{{ message.body }}</p> <span class="text-dark">{{ message.date}}</span>
                         </div>
                     </div>
                 {% endif %}
             </div>
     {% endfor %}
+</div>
     <div class="row">
         <div class="card col-md-12 p-3 shadow-sm">
             <form action="{% url 'create-message' thread.pk %}" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 {{ form }}
                 <div class="d-grid gap-2 mt-3">
-                    <button class="btn btn-light" type="submit">Send Message</button>
+                    <button class="btn btn-primary" type="submit">Send Message</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
+{% endif %}
 {% endblock %}
