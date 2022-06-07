@@ -1,12 +1,13 @@
 from django.db.models import Q
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from accounts.models import UserProfile
 from inbox.forms import MessageForm, ThreadForm
-from inbox.models import ThreadModel, MessageModel
+from inbox.models import ThreadModel, MessageModel, Notification
 from django.contrib import messages
 
-
 # Create your views here.
+from posts.models import Post
 
 
 def inbox(request):
@@ -80,10 +81,57 @@ def create_message(request, pk):
             message.receiver_user = receiver
             message.save()
 
-        # notification = Notification.objects.create(
-        #     notification_type=4,
-        #     from_user=request.user,
-        #     to_user=receiver,
-        #     thread=thread
-        # )
+        notification = Notification.objects.create(
+            notification_type=4,
+            from_user=requested_user_profile,
+            to_user=thread.receiver,
+            thread=thread,
+        )
         return redirect('thread', pk=pk)
+
+
+def create_thread_click(request, user_pk):
+    current_user_profile = UserProfile.objects.get(user=request.user)
+    requested_user_profile = UserProfile.objects.get(pk=user_pk)
+    try:
+        receiver = requested_user_profile
+        if ThreadModel.objects.filter(Q(user=current_user_profile, receiver=receiver) | Q(user=receiver,
+                                                                                          receiver=current_user_profile)).exists():
+            thread = ThreadModel.objects.filter(user=current_user_profile, receiver=receiver)[0]
+            return redirect('thread', pk=thread.pk)
+        else:
+            thread = ThreadModel(user=current_user_profile, receiver=receiver)
+            thread.save()
+            return redirect('thread', pk=thread.pk)
+    except:
+        messages.warning(request, "Invalid username")
+        return redirect(create_thread)
+
+
+def post_notification(request, notification_pk, post_pk):
+    notification = Notification.objects.get(pk=notification_pk)
+    notification.user_has_seen = True
+    notification.save()
+    return redirect('single_post', post_pk)
+
+
+def follow_notification(request, notification_pk, username_slug):
+    notification = Notification.objects.get(pk=notification_pk)
+    notification.user_has_seen = True
+    notification.save()
+    return redirect('user_profile', username_slug)
+
+
+def thread_notification(request, notification_pk, object_pk):
+    notification = Notification.objects.get(pk=notification_pk)
+    notification.user_has_seen = True
+    notification.save()
+    return redirect('thread', pk=object_pk)
+
+
+def remove_notification(request, notification_pk):
+
+    notification = Notification.objects.get(pk=notification_pk)
+    notification.user_has_seen = True
+    notification.save()
+    return HttpResponse('Success', content_type='text/plain')

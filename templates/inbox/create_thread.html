@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
     {% include 'includes/navbar.html' %}
-    {% include 'includes/alerts.html' %}
 <div class="container mt-5">
 
     <div class="row">
@@ -9,14 +8,13 @@
             <h2>Choose who you want to talk with</h2>
         </div>
     </div>
-
+ {% include 'includes/alerts.html' %}
+{% if user_profile.following_suggestions %}
   <div class="row">
         <div class="col-md-12 pl-5 pr-5">
             <h5>Suggestions based on your follows and likes</h5>
         </div>
     </div>
-
-    {% if user_profile.following_suggestions %}
             {% for user in user_profile.following_suggestions %}
             <div class="row mt-2">
                     <div class="col-lg-2 col-sm-0"></div>
@@ -25,9 +23,10 @@
                               <div class="card-body">
                                   <div class="row">
                                       <div class="col-lg-6 col-sm-4">
-                                           <a class="text-decoration-none" href="">
+                                           <a class="text-decoration-none" href="{% url 'user_profile' user.user.username_slug %}">
                                           <img class="avatar avatar-64 bg-light rounded-circle text-white" src="{{ user.profile_picture.url }}">
                                           <h4 class="card-title d-inline-block ml-2 pt-1">{{ user.user.username}}</h4></a>
+                                          <a href="{% url 'create-thread-click' user.pk %}"><i class="fa-solid fa-message text-primary"></i></a>
                                       </div>
                                   </div>
                                   <div class="row">
@@ -54,14 +53,6 @@
     {% endif %}
     <div class="row mt-5 mb-5">
         <div class="col-md-5 col-sm-12  pl-5 pr-5">
-            {% if messages %}
-                {% for message in messages %}
-                    <div class="alert alert-danger">
-                        {{ message }}
-                    </div>
-                {% endfor %}
-            {% endif %}
-
             <form action="" method="POST">
                 {% csrf_token %}
                 <p>... Or enter the username of receiver below</p>

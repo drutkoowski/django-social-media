@@ -78,6 +78,7 @@
                                 <a class="text-decoration-none" href="{% url 'user_profile' comment.user.user.username_slug %}">
                                   <img class="avatar avatar-32 bg-light rounded-circle text-white" src="{{ post.owner.profile_picture.url }}">
                                   <small class="card-title d-inline-block"><span><b>{{ comment.user }}</b></span>: {{ comment.content }}</small></a><span><small> {{ comment.created_at }}</small></span>
+                               <br>
                            {% endfor %}
                           {% endif %}
                        <div>

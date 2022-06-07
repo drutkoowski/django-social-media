@@ -1,3 +1,4 @@
+{% load custom_tags %}
 <script>
     const $dropdown = $(".dropdown");
 const $dropdownToggle = $(".dropdown-toggle");
@@ -65,10 +66,12 @@ $(window).on("load resize", function() {
                         <div class="dropdown-divider"></div>
                          <a class="text-decoration-none nav-link text-primary" href="{% url 'logout' %}"><i class="fa-solid fa-power-off"></i> Logout</a>
                       </div>
-
+                </li>
+                <li class="nav-item mt-2 ">
+                {% show_notifications %}
                 </li>
     </ul>
-      <form action="{% url 'search' %}" class="search mt-2 form-inline my-2 my-lg-0" method="get">
+      <form action="{% url 'search' %}" class="search mt-2 form-inline my-2 my-lg-0 ml-lg-3" method="get">
           {% csrf_token %}
           <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="keyword">
           <button class="btn btn-primary my-2 my-sm-0 submit" type="submit">Search</button>

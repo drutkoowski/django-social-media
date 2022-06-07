@@ -1,4 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
+
+from inbox.models import Notification
 from .forms import PostForm, CommentForm
 from .models import Post, PostLikes, PostComments
 from accounts.models import UserProfile
@@ -23,6 +25,7 @@ def create_post(request):
 
 
 def like_post(request, post_id):
+    current_user_profile = UserProfile.objects.filter(user=request.user).first()
     post = Post.objects.filter(pk=post_id).first()
     liking_user_profile = UserProfile.objects.filter(user_id=request.user.id).first()
     is_liked_already = PostLikes.objects.filter(post=post, user=liking_user_profile).first()
@@ -31,6 +34,12 @@ def like_post(request, post_id):
         return redirect(request.META.get('HTTP_REFERER', 'home')+f"#{post.id}")
     post_like = PostLikes(user=liking_user_profile, post=post)
     post_like.save()
+    notification = Notification.objects.create(
+        notification_type=1,
+        from_user=current_user_profile,
+        to_user=post.owner,
+        post=post
+    )
     return redirect(request.META.get('HTTP_REFERER', 'home')+f"#{post.id}")
 
 
@@ -55,6 +64,12 @@ def add_comment(request, post_id):
         content = request.POST["content"]
         comment = PostComments(user=current_user_profile, post=post, content=content)
         comment.save()
+        notification = Notification.objects.create(
+            notification_type=2,
+            from_user=current_user_profile,
+            to_user=post.owner,
+            post=post
+        )
     return redirect('single_post', post_id)
 
 

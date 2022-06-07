@@ -1,6 +1,8 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
+
+from inbox.models import Notification
 from .forms import UserForm, UserSignUpForm, EditProfileForm
 from posts.forms import CommentForm
 from accounts.models import Account, UserProfile
@@ -103,6 +105,11 @@ def profile_page(request, username_slug):
         if current_user_profile.user.username != user_to_follow.user.username:
             user_follow = UserFollowing(followed_by=current_user_profile, followed_to=user_to_follow)
             user_follow.save()
+            notification = Notification.objects.create(
+                notification_type=3,
+                from_user=current_user_profile,
+                to_user=user_to_follow,
+            )
             return redirect('user_profile', username_slug)
         else:
             messages.warning(request, "You can not follow this profile.")
