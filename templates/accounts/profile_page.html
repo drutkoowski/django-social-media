@@ -5,6 +5,7 @@
         <div class="row mt-5">
             <div class="col-12 mt-5">{% include 'includes/alerts.html' %}</div>
         </div>
+{#    ############}
             <div class="row mt-4">
                 <div class="col-lg-4 col-sm-6 mt-4 text-left">
                       <div class="p-0">
@@ -12,34 +13,44 @@
                       </div>
                 </div>
 
-                <div class="col-lg-8 col-sm-6 mt-4">
-                      <div class="row text-right mt-4">
-                          <div class="col-4">
-                              <h3 class="text-primary">{{ user_profile.user.username }}</h3>
-                          </div>
-                          <div class="col-8 text-left">
-                              {% if not is_followed %}
-                              <form action="{% url 'user_profile' user_profile.user.username_slug %}" method="post">
-                                  {% csrf_token %}
-                                <button class="btn btn-sm btn-primary text-light btn-submit rounded mt-1">Follow</button>
-                              </form>
-                              {% else %}
-                                    <form action="{% url 'unfollow' user_profile.user.id %}" method="post">
-                                    {% csrf_token %}
-                                        <button class="btn btn-primary btn-sm rounded text-light btn-submit mt-1">Unfollow</button>
+                <div class="col-lg-8 col-sm-12 mt-4">
+                      <div class="row mt-4">
 
-                              </form>
-                              {% endif %}
+                              <div class="col-lg-2 col-sm-4 text-center">
+                                  <h3 class="text-primary">{{ user_profile.user.username }}</h3>
+                              </div>
 
-                          </div>
+                                <div class="col-lg-3 col-sm-8">
+                                      {% if not is_followed %}
+                                      <form action="{% url 'user_profile' user_profile.user.username_slug %}" method="post">
+                                          {% csrf_token %}
+                                        <button class="btn btn-sm btn-primary text-light btn-submit rounded mt-1 btn-block">Follow</button>
+                                      </form>
+                                      {% else %}
+                                            <form action="{% url 'unfollow' user_profile.user.id %}" method="post">
+                                            {% csrf_token %}
+                                                <button class="btn btn-primary btn-sm rounded text-light btn-submit mt-1 btn-block">Unfollow</button>
+
+                                      </form>
+                                      {% endif %}
+                                  </div>
+
+                                <div class="col-lg-7 col-sm-0"></div>
                       </div>
-                    <div class="row mt-5">
-                        <div class="col-lg-8 text-center"><b>{{ user_profile.posts_count }}</b> Posts <b class="ml-1"><button class="bg-primary text-light btn-primary btn-sm btn rounded" data-toggle="modal" data-target="#exampleModal">{{ user_profile.followers_count }} Followers</button></b> <b class="ml-1"><button class="bg-primary text-light btn-primary btn-sm btn rounded" data-toggle="modal" data-target="#exampleModal2">{{ user_profile.following_count }} Following</button></b></div>
-                    </div>
+                   <div class="row mt-2 text-center text-lg-left">
+                                  <div class="col-lg-2 col-sm-12 active-color"><button style="width: 5rem; height: 3rem" class="bg-light text-dark btn-light btn-sm btn rounded"><b>{{ user_profile.posts_count }}</b>
+                                      <br>Posts</button> </div>
+                                  <div class="col-lg-2 col-sm-12 active-color"><button style="width: 5rem; height: 3rem" class="bg-light text-dark btn-light btn-sm btn rounded" data-toggle="modal" data-target="#exampleModal"><b>{{ user_profile.followers_count }}</b> Followers</button></div>
+                                  <div class="col-lg-2 col-sm-12 active-color"><button style="width: 5rem; height: 3rem" class="bg-light text-dark btn-light btn-sm btn rounded" data-toggle="modal" data-target="#exampleModal2"><b>{{ user_profile.following_count }}</b> Following</button></div>
+                          </div>
                 </div>
+
             </div>
-            <hr>
+    {#    ############}
+
+            <hr class="mt-5">
             <div class="row">
+            {% if posts %}
                 {% for post in posts %}
                 <div class="col-lg-4 col-sm-12">
                 <div class="card mt-4">
@@ -74,6 +85,21 @@
                         </div>
                     </div>
                 {% endfor %}
+            {% else %}
+                <div class="col-lg-12 col-sm-12 text-center mt-5">
+                    <i class="fa-solid fa-camera fa-5x text-center text-primary"></i>
+                </div>
+                <div class="col-lg-12 col-sm-12 text-center mt-5">
+                    <h4>No Posts Yet</h4>
+                    <small class="text-muted">When {{ user_profile.user.username }} posts, you'll see their photos here.</small>
+                </div>
+                 <div class="col-lg-12 col-sm-12 text-center mt-5">
+                </div>
+                 <div class="col-lg-12 col-sm-12 text-center mt-5">
+                </div>
+                 <div class="col-lg-12 col-sm-12 text-center mt-5">
+                </div>
+            {% endif %}
             </div>
     </div>
 {#    MODAL FOR FOLLOWERS #}

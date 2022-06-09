@@ -29,3 +29,10 @@
 	max-width: 35%;
 	height: auto;
 }
+
+.active-color > .btn-light:hover, .active-color > .btn-light:focus, .active-color > .btn-light:active:focus, .active-color > .btn-light:active, .active-color > .btn-light:active:hover{
+  background-color: #F8F9FA!important;
+  border-color: #F8F9FA!important;
+	outline: none!important;
+  box-shadow: none!important;
+}
