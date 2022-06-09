@@ -115,6 +115,25 @@ class UserProfile(models.Model):
         posts_liked = Post.objects.filter(pk__in=list_of_id_posts_liked).all()
         return posts_liked
 
+    def get_all_followers(self):
+        all_followers_instances = UserFollowing.objects.filter(followed_to=self)
+        list_of_id_users = []
+        for instance in all_followers_instances:
+            list_of_id_users.append(instance.followed_by.pk)
+        all_followers_profiles = UserProfile.objects.filter(pk__in=list_of_id_users).all()
+        return all_followers_profiles
+
+    def get_all_following(self):
+        all_following_instances = UserFollowing.objects.filter(followed_by=self)
+        list_of_id_users = []
+        for instance in all_following_instances:
+            list_of_id_users.append(instance.followed_to.pk)
+        print(list_of_id_users)
+        all_following_profiles = UserProfile.objects.filter(pk__in=list_of_id_users).all()
+        print(all_following_profiles)
+        return all_following_profiles
+
+
     def dm_suggestions(self):
         dm_suggestions = []
         following_users = UserFollowing.objects.filter(followed_by=self).order_by("-created_at").distinct()[:5]

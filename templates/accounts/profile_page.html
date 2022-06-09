@@ -21,20 +21,20 @@
                               {% if not is_followed %}
                               <form action="{% url 'user_profile' user_profile.user.username_slug %}" method="post">
                                   {% csrf_token %}
-                                <button class="btn btn-primary text-light btn-submit">Follow</button>
+                                <button class="btn btn-sm btn-primary text-light btn-submit rounded mt-1">Follow</button>
                               </form>
                               {% else %}
                                     <form action="{% url 'unfollow' user_profile.user.id %}" method="post">
                                     {% csrf_token %}
-                                        <button class="btn btn-primary text-light btn-submit">Unfollow</button>
+                                        <button class="btn btn-primary btn-sm rounded text-light btn-submit mt-1">Unfollow</button>
 
                               </form>
                               {% endif %}
 
                           </div>
                       </div>
-                    <div class="row mt-4">
-                        <div class="col-lg-8 text-center"><b>{{ user_profile.posts_count }}</b> Posts <b class="ml-1">{{ user_profile.followers_count }}</b> Followers <b class="ml-1">{{ user_profile.following_count }}</b> Following</div>
+                    <div class="row mt-5">
+                        <div class="col-lg-8 text-center"><b>{{ user_profile.posts_count }}</b> Posts <b class="ml-1"><button class="bg-primary text-light btn-primary btn-sm btn rounded" data-toggle="modal" data-target="#exampleModal">{{ user_profile.followers_count }} Followers</button></b> <b class="ml-1"><button class="bg-primary text-light btn-primary btn-sm btn rounded" data-toggle="modal" data-target="#exampleModal2">{{ user_profile.following_count }} Following</button></b></div>
                     </div>
                 </div>
             </div>
@@ -76,4 +76,64 @@
                 {% endfor %}
             </div>
     </div>
+{#    MODAL FOR FOLLOWERS #}
+    <div class="modal fade mt-5" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Followers</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                  {% if user_profile.get_all_followers %}
+                        {% for followers in user_profile.get_all_followers %}
+                            <div class="col-12 mt-2">
+                                    <a class="text-decoration-none" href="">
+                                     <img class="avatar avatar-64 bg-light rounded-circle text-white" src="{{ followers.profile_picture.url }}">
+                                     <h4 class="card-title d-inline-block ml-2 pt-1">{{ followers.user.username }}</h4></a>
+                            <hr>
+                            </div>
+                        {% endfor %}
+                      {% else %}
+                            <div class="col-12 mt-2">
+                                    <h3 class="text-muted">This user has no followers.</h3>
+                            </div>
+                  {% endif %}
+                    </div>
+                </div>
+            </div>
+    </div>
+
+{#    MODAL FOR FOLLOWING #}
+     <div class="modal fade mt-5" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModal2Label" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModal2Label">Following</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                  {% if user_profile.get_all_following%}
+                        {% for following in user_profile.get_all_following %}
+                            <div class="col-12 mt-2">
+                                    <a class="text-decoration-none" href="">
+                                     <img class="avatar avatar-64 bg-light rounded-circle text-white" src="{{ following.profile_picture.url }}">
+                                     <h4 class="card-title d-inline-block ml-2 pt-1">{{ following.user.username }}</h4></a>
+                            </div>
+                            <hr>
+                        {% endfor %}
+                      {% else %}
+                        <div class="col-12 mt-2">
+                                    <h3 class="text-muted">This user has no followings.</h3>
+                            </div>
+                  {% endif %}
+                    </div>
+                </div>
+            </div>
+    </div>
+
 {% endblock %}
