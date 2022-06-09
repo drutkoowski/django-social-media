@@ -173,11 +173,8 @@ class UserProfile(models.Model):
                 if z != how_many_suggestions_to_fill and x.pk not in profile_id_which_user_follows_actually and x.pk not in ids_to_suggest and x.pk != self.pk :
                     top_followed_users_ids.append(x.pk)
                     z += 1
-            print(top_followed_users_ids)
             top_followed_users_profiles = UserProfile.objects.filter(pk__in=top_followed_users_ids).all()
-            print(top_followed_users_profiles)
             suggestions = chain(suggestions, top_followed_users_profiles)
-        print(suggestions)
         return suggestions
 
 
