@@ -1,3 +1,4 @@
+from itertools import chain
 from random import choice
 from django.contrib.auth.base_user import BaseUserManager, AbstractBaseUser
 from django.db import models
@@ -126,6 +127,7 @@ class UserProfile(models.Model):
         return dm_suggestions
 
     def following_suggestions(self):
+
         list_of_ids = []
         # Get 2 most recent follows by user
         following_users = UserFollowing.objects.filter(followed_by=self).order_by("-created_at").distinct()[:2]
@@ -161,12 +163,21 @@ class UserProfile(models.Model):
 
         suggestions = UserProfile.objects.filter(pk__in=ids_to_suggest).all()
         how_many_suggestions_to_fill = 4 - suggestions.count()
+        top_followed_users_ids = []
         if how_many_suggestions_to_fill > 1:
             user_profiles = UserProfile.objects.all()
             top_followed_users = sorted(user_profiles, key=lambda ur: (ur.followers_count(), ur.user.date_joined))
             top_followed_users.reverse()
-            print(top_followed_users)
-
+            z = 0
+            for x in top_followed_users:
+                if z != how_many_suggestions_to_fill and x.pk not in profile_id_which_user_follows_actually and x.pk not in ids_to_suggest and x.pk != self.pk :
+                    top_followed_users_ids.append(x.pk)
+                    z += 1
+            print(top_followed_users_ids)
+            top_followed_users_profiles = UserProfile.objects.filter(pk__in=top_followed_users_ids).all()
+            print(top_followed_users_profiles)
+            suggestions = chain(suggestions, top_followed_users_profiles)
+        print(suggestions)
         return suggestions
 
 
