@@ -1,7 +1,10 @@
 from random import choice
 from django.contrib.auth.base_user import BaseUserManager, AbstractBaseUser
 from django.db import models
+from django.db.models import Q
+
 from followers.models import UserFollowing
+from inbox.models import ThreadModel
 from posts.models import Post, PostLikes
 
 
@@ -111,13 +114,62 @@ class UserProfile(models.Model):
         posts_liked = Post.objects.filter(pk__in=list_of_id_posts_liked).all()
         return posts_liked
 
-    def following_suggestions(self):
-        following_suggestions = []
+    def dm_suggestions(self):
+        dm_suggestions = []
         following_users = UserFollowing.objects.filter(followed_by=self).order_by("-created_at").distinct()[:5]
         for followed in following_users:
-            following_suggestions.append(followed.followed_to)
+            dm_suggestions.append(followed.followed_to)
         all_liked = PostLikes.objects.filter(user=self).values_list('user', flat=True).distinct()[:3]
         random_liked_userprofile_suggestion_query_set = UserProfile.objects.filter(pk__in=all_liked).all()
         for like in random_liked_userprofile_suggestion_query_set:
-            following_suggestions.append(like)
-        return following_suggestions
+            dm_suggestions.append(like)
+        return dm_suggestions
+
+    def following_suggestions(self):
+        list_of_ids = []
+        # Get 2 most recent follows by user
+        following_users = UserFollowing.objects.filter(followed_by=self).order_by("-created_at").distinct()[:2]
+        # Get 2 most recent dm user
+        most_recent_dm = ThreadModel.objects.filter(Q(user=self) | Q(receiver=self)).order_by("-created_at").distinct()[:2]
+        for x in following_users:
+            list_of_ids.append(x.followed_to.pk)
+        for x in most_recent_dm:
+            if x.user == self:
+                list_of_ids.append(x.receiver.pk)
+            elif x.receiver == self:
+                list_of_ids.append(x.user.pk)
+        # list of ids of 2 recent follows and dmed users excluding current user
+        final_list_of_ids = []
+        for single_id in list_of_ids:
+            if not self.pk == single_id:
+                if not single_id in final_list_of_ids:
+                    final_list_of_ids.append(single_id)
+
+        profile_id_which_user_follows_actually = []
+        # All users followed by current user
+        following_users = UserFollowing.objects.filter(followed_by=self).order_by("-created_at").distinct().all()
+        for x in following_users:
+            profile_id_which_user_follows_actually.append(x.followed_to.pk)
+        follows_of_user_followings_query = UserFollowing.objects.filter(followed_by__pk__in=final_list_of_ids).order_by("-created_at").distinct()[:4]
+        list_of_ids_which_my_followers_follow = []
+        for x in follows_of_user_followings_query:
+            list_of_ids_which_my_followers_follow.append(x.followed_to.pk)
+        ids_to_suggest = []
+        for z in list_of_ids_which_my_followers_follow:
+            if not z in profile_id_which_user_follows_actually and z != self.pk:
+                ids_to_suggest.append(z)
+
+        suggestions = UserProfile.objects.filter(pk__in=ids_to_suggest).all()
+        how_many_suggestions_to_fill = 4 - suggestions.count()
+        if how_many_suggestions_to_fill > 1:
+            user_profiles = UserProfile.objects.all()
+            top_followed_users = sorted(user_profiles, key=lambda ur: (ur.followers_count(), ur.user.date_joined))
+            top_followed_users.reverse()
+            print(top_followed_users)
+
+        return suggestions
+
+
+
+
+

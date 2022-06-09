@@ -9,13 +9,13 @@
         </div>
     </div>
  {% include 'includes/alerts.html' %}
-{% if user_profile.following_suggestions %}
+{% if user_profile.dm_suggestions %}
   <div class="row">
         <div class="col-md-12 pl-5 pr-5">
-            <h5>Suggestions based on your follows and likes</h5>
+            <h5>Suggestions based on your follows, likes and conversations</h5>
         </div>
     </div>
-            {% for user in user_profile.following_suggestions %}
+            {% for user in user_profile.dm_suggestions %}
             <div class="row mt-2">
                     <div class="col-lg-2 col-sm-0"></div>
                      <div class="col-lg-6 col-sm-12 p-0">

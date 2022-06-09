@@ -39,7 +39,7 @@
                 {% if thread.receiver == request.user %}
                     <h5 class="mt-3 mb-3">Your conversation with <a class="text-decoration-none" href="{% url 'user_profile' thread.user.user.username_slug %}">@{{ thread.user }}</a></h5>
                 {% else %}
-                    <h5 class="mt-3 mb-3">Your conversation with <a class="text-decoration-none" href="{% url 'user_profile' thread.user.user.username_slug %}">@{{ thread.receiver }}</a></h5>
+                    <h5 class="mt-3 mb-3">Your conversation with <a class="text-decoration-none" href="{% url 'user_profile' thread.receiver.user.username_slug %}">@{{ thread.receiver }}</a></h5>
                 {% endif %}
             </div>
         </div>

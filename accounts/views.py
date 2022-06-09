@@ -84,7 +84,7 @@ def home(request):
     all_posts.reverse()
     context = {
         "posts": all_posts,
-        "form":form,
+        "form": form,
     }
     return render(request, "home/home.html", context)
 
@@ -122,6 +122,7 @@ def profile_page(request, username_slug):
     user_posts = Post.objects.filter(owner__user=user_profile.user).order_by("created_at").all()
     context = {
         "user_profile": user_profile,
+        "viewer_profile": current_user_profile_to_check,
         "posts": user_posts,
         "is_followed": is_followed_by_current,
     }
@@ -157,8 +158,10 @@ def search(request):
 
 def home_friends(request):
     form = CommentForm()
+    current_user_profile = UserProfile.objects.filter(user=request.user).first()
     context = {
-        "form": form
+        "form": form,
+        "current_user_profile": current_user_profile
     }
     return render(request, "home/home_followed_only.html", context)
 
