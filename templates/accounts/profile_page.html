@@ -7,7 +7,7 @@
         </div>
 {#    ############}
             <div class="row mt-4">
-                <div class="col-lg-4 col-sm-6 mt-4 text-left">
+                <div class="col-lg-4 col-sm-12 text-center text-lg-left mt-4">
                       <div class="p-0">
                           <img class="avatar avatar-128 bg-light rounded-circle text-white" src="{{ user_profile.profile_picture.url }}">
                       </div>
@@ -37,12 +37,12 @@
 
                                 <div class="col-lg-7 col-sm-0"></div>
                       </div>
-                   <div class="row mt-2 text-center text-lg-left">
-                                  <div class="col-lg-2 col-sm-12 active-color"><button style="width: 5rem; height: 3rem" class="bg-light text-dark btn-light btn-sm btn rounded"><b>{{ user_profile.posts_count }}</b>
-                                      <br>Posts</button> </div>
-                                  <div class="col-lg-2 col-sm-12 active-color"><button style="width: 5rem; height: 3rem" class="bg-light text-dark btn-light btn-sm btn rounded" data-toggle="modal" data-target="#exampleModal"><b>{{ user_profile.followers_count }}</b> Followers</button></div>
-                                  <div class="col-lg-2 col-sm-12 active-color"><button style="width: 5rem; height: 3rem" class="bg-light text-dark btn-light btn-sm btn rounded" data-toggle="modal" data-target="#exampleModal2"><b>{{ user_profile.following_count }}</b> Following</button></div>
-                          </div>
+                            <div class="row mt-2 text-lg-left">
+                                  <div class="col-lg-2 col-sm-4 col-xs-4 col-md-4 active-color"><button class="bg-light text-dark btn-light btn-sm btn rounded d-inline"><b>{{ user_profile.posts_count }}</b>
+                                      Posts</button> </div>
+                                  <div class="col-lg-2 col-sm-4 col-xs-4 col-md-4 active-color"><button class="bg-light text-dark btn-light btn-sm btn rounded d-inline" data-toggle="modal" data-target="#exampleModal"><b>{{ user_profile.followers_count }}</b> Followers</button></div>
+                                  <div class="col-lg-2 col-sm-4 col-xs-4 col-md-4 active-color"><button class="bg-light text-dark btn-light btn-sm btn rounded d-inline" data-toggle="modal" data-target="#exampleModal2"><b>{{ user_profile.following_count }}</b> Following</button></div>
+                            </div>
                 </div>
 
             </div>
@@ -116,7 +116,7 @@
                   {% if user_profile.get_all_followers %}
                         {% for followers in user_profile.get_all_followers %}
                             <div class="col-12 mt-2">
-                                    <a class="text-decoration-none" href="">
+                                    <a class="text-decoration-none" href="{% url 'user_profile' followers.user.username_slug %}">
                                      <img class="avatar avatar-64 bg-light rounded-circle text-white" src="{{ followers.profile_picture.url }}">
                                      <h4 class="card-title d-inline-block ml-2 pt-1">{{ followers.user.username }}</h4></a>
                             <hr>
@@ -146,7 +146,7 @@
                   {% if user_profile.get_all_following%}
                         {% for following in user_profile.get_all_following %}
                             <div class="col-12 mt-2">
-                                    <a class="text-decoration-none" href="">
+                                    <a class="text-decoration-none" href="{% url 'user_profile' following.user.username_slug %}">
                                      <img class="avatar avatar-64 bg-light rounded-circle text-white" src="{{ following.profile_picture.url }}">
                                      <h4 class="card-title d-inline-block ml-2 pt-1">{{ following.user.username }}</h4></a>
                             </div>
