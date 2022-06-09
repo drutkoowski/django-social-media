@@ -1,7 +1,7 @@
-<div class="dropdown p-0" style="font-size: 2.3rem;">
+<div class="dropdown p-0" style="font-size: 2.45rem;">
     <span class="badge notification-badge p-0" onclick="showNotifications()"> <i class="fa-solid fa-bell fa-fw
     {% if notifications.count > 0 %} text-warning{% else %}text-primary{% endif %}"></i></span>
-	<div class="dropdown-content d-none" id="notification-container">
+	<div class="dropdown-content d-none" id="notification-container" style="font-size: 1rem;">
 
 		{% for notification in notifications %}
 			{% if notification.post %}

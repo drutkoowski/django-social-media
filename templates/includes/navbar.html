@@ -49,11 +49,11 @@ $(window).on("load resize", function() {
                 <li class="nav-item ml-lg-2 mt-lg-2" >
                     <a href="{% url 'home_friends' %}"><i class="fa-solid fa-fw fa-house-user mt-1 text-primary bg-light"></i></a>
                 </li>
-                <li class="nav-item ml-lg-2 mt-lg-2" >
+                <li class="nav-item ml-lg-2 mt-lg-2" style="margin-top:2px">
                     <a href="{% url 'home' %}"><i class="fa-solid fa-fw fa-compass mt-1 text-primary bg-light"></i></a>
                 </li>
-                 <li class="nav-item ml-lg-2 mt-lg-2">
-                     <a href="{% url 'inbox' %}"><i class="fa-solid fa-location-arrow mt-1 text-primary bg-light fa-fw"></i></a>
+                 <li class="nav-item ml-lg-2 mt-lg-2" style="font-size: 2.21rem;">
+                     <a href="{% url 'inbox' %}"><i class="fa-solid fa-fw fa-location-arrow mt-1 text-primary bg-light"></i></a>
                 </li>
                  <li class="nav-item ml-lg-2">
                     {% show_notifications %}

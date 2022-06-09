@@ -128,9 +128,7 @@ class UserProfile(models.Model):
         list_of_id_users = []
         for instance in all_following_instances:
             list_of_id_users.append(instance.followed_to.pk)
-        print(list_of_id_users)
         all_following_profiles = UserProfile.objects.filter(pk__in=list_of_id_users).all()
-        print(all_following_profiles)
         return all_following_profiles
 
 
