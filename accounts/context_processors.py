@@ -38,3 +38,15 @@ def get_liked_posts_by_user(request):
         liked_posts_id.append(like.pk)
     all_x = Post.objects.filter(id__in=liked_posts_id).all()
     return dict(get_liked_posts_by_user=all_x)
+
+
+def get_current_user_profile(request):
+    if 'admin' in request.path:
+        return {}
+    if not request.user.is_authenticated or request.user is AnonymousUser:
+        return dict(get_current_user_profile=None)
+    user = request.user
+    userprofile = UserProfile.objects.filter(user=user).first()
+    return dict(get_current_user_profile=userprofile)
+
+

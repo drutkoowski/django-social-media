@@ -36,3 +36,20 @@
 	outline: none!important;
   box-shadow: none!important;
 }
+
+
+.image-id {
+  border: solid 3px;
+  animation: rainbow 9s linear infinite;
+}
+
+@keyframes rainbow {
+  	0% { border-color: #ef3550 }
+	15% { border-color: #eeff41 }
+  30% { border-color: #f48fb1 }
+  45% { border-color: #2196f3 }
+  50% { border-color: #26c6da }
+  60% { border-color: #eeff41 }
+  80% { border-color: #f9a825 }
+  100% { border-color: #ff5722 }
+}

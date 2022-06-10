@@ -4,10 +4,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 
 from inbox.models import Notification
 from .forms import UserForm, UserSignUpForm, EditProfileForm
-from posts.forms import CommentForm
+from posts.forms import CommentForm, StoryForm
 from accounts.models import Account, UserProfile
 from django.contrib import messages, auth
-from posts.models import Post
+from posts.models import Post, Story
 from followers.models import UserFollowing
 
 
@@ -80,11 +80,13 @@ def signup(request):
 def home(request):
     form = CommentForm()
     posts = Post.objects.order_by("-created_at").all()
+    current_user_profile = UserProfile.objects.get(user=request.user)
     all_posts = sorted(posts, key=lambda ur: (ur.post_likes(), ur.post_comments()))
     all_posts.reverse()
     context = {
         "posts": all_posts,
         "form": form,
+        "current_user_profile":current_user_profile,
     }
     return render(request, "home/home.html", context)
 
@@ -114,6 +116,7 @@ def profile_page(request, username_slug):
         else:
             messages.warning(request, "You can not follow this profile.")
             return redirect('user_profile', username_slug)
+    form = StoryForm()
     current_user = request.user
     user_profile = get_object_or_404(UserProfile, user__username_slug=username_slug)
     current_user_profile_to_check = UserProfile.objects.filter(user__username=current_user.username).first()
@@ -125,6 +128,7 @@ def profile_page(request, username_slug):
         "viewer_profile": current_user_profile_to_check,
         "posts": user_posts,
         "is_followed": is_followed_by_current,
+        "form": form,
     }
     return render(request, "accounts/profile_page.html", context)
 
@@ -184,3 +188,12 @@ def edit_profile(request):
     }
 
     return render(request, "accounts/edit_profile.html", context)
+
+
+def create_story(request):
+    current_user_profile = UserProfile.objects.filter(user_id=request.user.id).first()
+    if request.method == "POST":
+        story_image = request.FILES.get('story_image')
+        story = Story(user=current_user_profile, story_image=story_image)
+        story.save()
+    return redirect('user_profile', current_user_profile.user.username_slug)

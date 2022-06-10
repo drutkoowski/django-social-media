@@ -11,4 +11,5 @@ urlpatterns = [
     path("unfollow/<int:user_id>", views.unfollow, name="unfollow"),
     path("search/", views.search, name="search"),
     path("home/friends", views.home_friends, name="home_friends"),
+    path("stories/create/", views.create_story, name="create_story"),
 ]

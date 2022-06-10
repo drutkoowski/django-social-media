@@ -1,73 +1,81 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
     {% include 'includes/navbar.html' %}
 <div id="home-content" class="container mt-5">
 {% include 'includes/alerts.html' %}
 <div class="row mt-5"></div>
-    {% if posts %}
-        {% for post in posts %}
-            <div class="row mt-5">
-                <div class="col-lg-2 col-sm-0"></div>
-                 <div class="col-lg-7 col-sm-12 p-0">
-                     <div class="card p-0">
-                          <div class="card-body">
-                              <div class="row">
-                                  <div class="col-lg-8 col-sm-8">
-                                      <a class="text-decoration-none" href="{% url 'user_profile' post.owner.user.username_slug %}">
-                                      <img class="avatar avatar-32 bg-light rounded-circle text-white" src="{{ post.owner.profile_picture.url }}">
-                                      <h4 class="card-title d-inline-block">{{ post.owner.user.username}}</h4></a>
+    <div class="row mt-5">
+        <div class="col-lg-8">
+            {% if posts %}
+            {% for post in posts %}
+                <div class="row mt-5">
+                    <div class="col-lg-2 col-sm-0"></div>
+                     <div class="col-lg-10 col-sm-12 p-0">
+                         <div class="card p-0">
+                              <div class="card-body">
+                                  <div class="row">
+                                      <div class="col-lg-8 col-sm-8">
+                                      {% if post.owner.has_actual_story%}
+                                          <a data-toggle="modal" data-target="#modalUserActions"><img class="avatar avatar-64 bg-light rounded-circle text-white image-id" src="{{ post.owner.profile_picture.url }}"></a>
+                                          <a class="text-decoration-none" href="{% url 'user_profile' post.owner.user.username_slug %}"><h4 class="card-title d-inline-block">{{ post.owner.user.username}}</h4></a>
+                                      {% else %}
+                                          <a class="text-decoration-none" href="{% url 'user_profile' post.owner.user.username_slug %}">
+                                         <img class="avatar avatar-64 bg-light rounded-circle text-white" src="{{ post.owner.profile_picture.url }}">
+                                          <h4 class="card-title d-inline-block">{{ post.owner.user.username}}</h4></a>
+                                      {% endif %}
 
+                                      </div>
+                                       <div class="col-lg-4 col-sm-4 mt-2 mt-lg-0">
+                                            <p id="{{ post.pk }}">{{ post.created_at }}</p>
+                                      </div>
                                   </div>
-                                   <div class="col-lg-4 col-sm-4">
-                                        <p id="{{ post.pk }}">{{ post.created_at }}</p>
-                                  </div>
-                              </div>
-                              <a href="{% url 'single_post' post.id %}">
-                              <img src="{{ post.photo.url }}" class="w-100 h-100 rounded mx-auto d-block rounded" style="height: 20rem; width: 40rem" alt="Post Photo">
-                              </a>
-                                {% if post in get_liked_posts_by_user %}
-                                    <a href="{% url 'like_post' post.id %}"><i class="fa-solid fa-heart fa-2x text-danger mt-1"></i></a>
-                               {% else %}
-                               <a href="{% url 'like_post' post.id %}"><i class="fa-regular fa-heart fa-2x mt-1 text-primary"></i></a>
-                            {% endif %}
-                              <a href="{% url 'single_post' post.id %}"><i class="fa-regular fa-comment fa-2x text-primary ml-2 mt-1"></i></a>
-                          <p>Likes: {{ post.post_likes }}</p>
-                                <h3 class="card-text"><a class="text-decoration-none" href="{% url 'user_profile' post.owner.user.username_slug %}">{{ post.owner.user.username}}</a></h3>
-                              <small>{{ post.description}}</small>
-                              {% if post.view_recent_comments %}
-                                    <small class="d-block mt-3"><b>Recent Comments</b> <a class="text-decoration-none" href="{% url 'single_post' post.id %}">See all ({{ post.post_comments }})</a></small>
-                               {% for comment in post.view_recent_comments %}
-                                    <a class="text-decoration-none" href="{% url 'user_profile' comment.user.user.username_slug %}">
-                                      <img class="avatar avatar-32 bg-light rounded-circle text-white" src="{{ post.owner.profile_picture.url }}">
-                                      <small class="card-title d-inline-block"><span><b>{{ comment.user }}</b></span>: {{ comment.content }}</small></a><span><small> {{ comment.created_at }}</small></span>
-                                   <br>
-                               {% endfor %}
-                              {% endif %}
-                          <div>
-                           <form action="{% url 'add_comment' post.id %}" method="post">
-                               {% csrf_token %}
-                               {% for field in form %}
-                                   <div class="row mt-4">
-                                        <a class="d-inline-block ml-3" href="{% url 'user_profile' user.username_slug %}"> <img class="avatar avatar-32 bg-light rounded-circle bg-primary text-white d-inline-block" src="{{ get_avatar }}"></a>
+                              <div class="row mt-2"></div>
+                                  <a href="{% url 'single_post' post.id %}">
+                                  <img src="{{ post.photo.url }}" class="w-100 h-100 rounded mx-auto d-block rounded" style="height: 20rem; width: 40rem" alt="Post Photo">
+                                  </a>
+                                    {% if post in get_liked_posts_by_user %}
+                                        <a href="{% url 'like_post' post.id %}"><i class="fa-solid fa-heart fa-2x text-danger mt-1"></i></a>
+                                   {% else %}
+                                   <a href="{% url 'like_post' post.id %}"><i class="fa-regular fa-heart fa-2x mt-1 text-primary"></i></a>
+                                {% endif %}
+                                  <a href="{% url 'single_post' post.id %}"><i class="fa-regular fa-comment fa-2x text-primary ml-2 mt-1"></i></a>
+                              <p>Likes: {{ post.post_likes }}</p>
+                                    <h3 class="card-text"><a class="text-decoration-none" href="{% url 'user_profile' post.owner.user.username_slug %}">{{ post.owner.user.username}}</a></h3>
+                                  <small>{{ post.description}}</small>
+                                  {% if post.view_recent_comments %}
+                                        <small class="d-block mt-3"><b>Recent Comments</b> <a class="text-decoration-none" href="{% url 'single_post' post.id %}">See all ({{ post.post_comments }})</a></small>
+                                   {% for comment in post.view_recent_comments %}
+                                        <a class="text-decoration-none" href="{% url 'user_profile' comment.user.user.username_slug %}">
+                                          <img class="avatar avatar-32 bg-light rounded-circle text-white" src="{{ post.owner.profile_picture.url }}">
+                                          <small class="card-title d-inline-block"><span><b>{{ comment.user }}</b></span>: {{ comment.content }}</small></a><span><small> {{ comment.created_at }}</small></span>
+                                       <br>
+                                   {% endfor %}
+                                  {% endif %}
+                              <div>
+                               <form action="{% url 'add_comment' post.id %}" method="post">
+                                   {% csrf_token %}
+                                   {% for field in form %}
+                                       <div class="row mt-4">
+                                            <a class="d-inline-block ml-3" href="{% url 'user_profile' user.username_slug %}"> <img class="avatar avatar-32 bg-light rounded-circle bg-primary text-white d-inline-block" src="{{ get_avatar }}"></a>
+                                            <div class="d-inline-block ml-4">
+                                                {{ field.errors }}
+                                                {{ field }}
+                                       </div>
+                                           {% endfor %}
                                         <div class="d-inline-block ml-4">
-                                            {{ field.errors }}
-                                            {{ field }}
-                                   </div>
-                                       {% endfor %}
-                                    <div class="d-inline-block ml-4">
-                                       <button class="btn btn-submit btn-primary btn-block">Comment</button>
-                                    </div>
-                                   </div>
+                                           <button class="btn btn-submit btn-primary btn-block">Comment</button>
+                                        </div>
+                                       </div>
 
-                            </form>
+                                </form>
+                            </div>
+                              </div>
+                            </div>
                         </div>
-                          </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-sm-0"></div>
-             </div>
-            {% endfor %}
+
+                 </div>
+                {% endfor %}
         {% elif users %}
             {% for user in users %}
             <div class="row mt-5">
@@ -116,11 +124,69 @@
                      </div>
         </div>
 {% endif %}
-
-<div class="text-center mt-5">
-    <p class="mt-5">We could not match any more posts for now.</p>
-</div>
+        </div>
+    <div class="col-lg-4">
+            <div class="row mt-2 d-md-none d-sm-none d-lg-block ml-3" style="position:fixed;">
+                <div class="col-12">
+                        <a class="text-decoration-none" href="{% url 'user_profile' current_user_profile.user.username_slug %}">
+                         <img class="avatar avatar-64 bg-light rounded-circle text-white {% if current_user_profile.has_actual_story%}image-id{% endif %}" src="{{ current_user_profile.profile_picture.url }}">
+                         <h4 class="card-title d-inline-block ml-2 pt-1">{{ current_user_profile.user.username }}</h4></a>
+                </div>
+                <div class="col-12 mt-3">
+                    <p style="color:#9d9d9d">Suggestions For You</p>
+                </div>
+                {% for x in current_user_profile.following_suggestions %}
+                     <div class="col-12 mt-3">
+                        <a class="text-decoration-none" href="{% url 'user_profile' x.user.username_slug %}">
+                         <img class="avatar avatar-24 bg-light rounded-circle text-white" src="{{ x.profile_picture.url }}">
+                         <small class="card-title d-inline-block ml-1 pt-1">{{ x.user.username }}</small></a>
+                    </div>
+                {% endfor %}
+            </div>
     </div>
+    </div>
+
+        <div class="row text-center mt-5">
+            <p class="col-12 mt-5">We could not match any more posts for now.</p>
+        </div>
 </div>
 
+{#    Modal for user actions #}
+    <div class="modal fade mt-5" id="modalUserActions" tabindex="-1" role="dialog" aria-labelledby="modalUserActions" aria-hidden="true">
+              <div class="modal-dialog mt-5" role="document">
+                <div class="modal-content">
+                  <div class="modal-header bg-primary text-light">
+                    <h5 class="modal-title" id="modalUserActions">Add Your Story</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true" class="text-light">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                        asdasdas
+                    </div>
+                </div>
+            </div>
+    </div>
 {% endblock %}
+
+<script>
+    var modal = document.getElementById("myModal");
+
+// Get the image and insert it inside the modal - use its "alt" text as a caption
+var img = document.getElementById("myImg");
+var modalImg = document.getElementById("img01");
+var captionText = document.getElementById("caption");
+img.onclick = function(){
+  modal.style.display = "block";
+  modalImg.src = this.src;
+  captionText.innerHTML = this.alt;
+}
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+}
+</script>

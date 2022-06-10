@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
     {% include 'includes/navbar.html' %}
     <div class="container mt-5">
@@ -8,8 +9,11 @@
 {#    ############}
             <div class="row mt-4">
                 <div class="col-lg-4 col-sm-12 text-center text-lg-left mt-4">
-                      <div class="p-0">
-                          <img class="avatar avatar-128 bg-light rounded-circle text-white" src="{{ user_profile.profile_picture.url }}">
+                      <div class="p-0 button-container">
+                          <figure class="figure">
+                          <img class="avatar avatar-128 bg-light rounded-circle text-white {% if user_profile.has_actual_story %}image-id{% endif %}" src="{{ user_profile.profile_picture.url }}">
+                          <figcaption class="figure-caption text-center"><a class="text-decoration-none mt-1" href="" data-toggle="modal" data-target="#modalUserActions"><i class="fa-light fa-plus fa-lg"></i> Add Story</a></figcaption>
+                          </figure>
                       </div>
                 </div>
 
@@ -37,7 +41,10 @@
 
                                 <div class="col-lg-7 col-sm-0"></div>
                       </div>
-                            <div class="row mt-2 text-lg-left">
+                            <div class="row text-lg-left">
+                                <div class="col-12 mt-2 ml-lg-2"><small>{{ user_profile.bio }}</small></div>
+                            </div>
+                            <div class="row mt-4 text-lg-left">
                                   <div class="col-lg-2 col-4 active-color mt-2 mt-lg-0"><button class="bg-light text-dark btn-light btn-sm btn rounded"><b>{{ user_profile.posts_count }}</b>
                                       Posts</button> </div>
                                   <div class="col-lg-2 col-4 active-color mt-2 mt-lg-0"><button class="bg-light text-dark btn-light btn-sm btn rounded" data-toggle="modal" data-target="#exampleModal"><b>{{ user_profile.followers_count }}</b> Followers</button></div>
@@ -104,7 +111,7 @@
     </div>
 {#    MODAL FOR FOLLOWERS #}
     <div class="modal fade mt-5" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-              <div class="modal-dialog" role="document">
+              <div class="modal-dialog mt-5" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Followers</h5>
@@ -134,7 +141,7 @@
 
 {#    MODAL FOR FOLLOWING #}
      <div class="modal fade mt-5" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModal2Label" aria-hidden="true">
-              <div class="modal-dialog" role="document">
+              <div class="modal-dialog mt-5" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
                     <h5 class="modal-title" id="exampleModal2Label">Following</h5>
@@ -157,6 +164,37 @@
                                     <h3 class="text-muted">This user has no followings.</h3>
                             </div>
                   {% endif %}
+                    </div>
+                </div>
+            </div>
+    </div>
+
+{#    Modal for user actions #}
+    <div class="modal fade mt-5" id="modalUserActions" tabindex="-1" role="dialog" aria-labelledby="modalUserActions" aria-hidden="true">
+              <div class="modal-dialog mt-5" role="document">
+                <div class="modal-content">
+                  <div class="modal-header bg-primary text-light">
+                    <h5 class="modal-title" id="modalUserActions">Add Your Story</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true" class="text-light">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                         <form action="{% url 'create_story' %}" method="post" enctype="multipart/form-data">
+             {% csrf_token %}
+             <div class="card p-0 mt-5">
+                  <div class="card-body p-0 rounded">
+                      <img id="photo" class="w-100" style="height: 15rem; width: 20rem" src="{% static 'images/overview.jpg' %}">
+                  </div>
+                </div>
+               {% for field in form %}
+                        <div class="fieldWrapper mt-4" style="max-height: 10rem">
+                            {{ field.errors }}
+                            {{ field }}
+                        </div>
+                    {% endfor %}
+                          <button class="btn btn-submit btn-primary btn-block mt-2">Add Story</button>
+             </form>
                     </div>
                 </div>
             </div>

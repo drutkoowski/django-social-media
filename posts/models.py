@@ -1,7 +1,10 @@
+import datetime
+
 from django.db import models
 
 
 # Create your models here.
+from django.utils import timezone
 
 
 class Post(models.Model):
@@ -53,3 +56,18 @@ class PostComments(models.Model):
 
     class Meta:
         verbose_name_plural = "Post Comments"
+
+
+class Story(models.Model):
+    user = models.ForeignKey("accounts.UserProfile", on_delete=models.CASCADE)
+    story_image = models.ImageField(upload_to='stories/')
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_saved = models.BooleanField(default=False)
+    expiration_date = models.DateTimeField(default=timezone.now() + datetime.timedelta(days=1))
+
+    def __str__(self):
+        return f"{self.user.user.username}"
+
+    class Meta:
+        verbose_name_plural = "Stories"
+

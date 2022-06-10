@@ -71,6 +71,7 @@ TEMPLATES = [
                 'accounts.context_processors.get_avatar',
                 'accounts.context_processors.get_followed_posts',
                 'accounts.context_processors.get_liked_posts_by_user',
+                "accounts.context_processors.get_current_user_profile",
             ],
         },
     },

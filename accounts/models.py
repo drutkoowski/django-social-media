@@ -1,3 +1,4 @@
+import datetime
 from itertools import chain
 from random import choice
 from django.contrib.auth.base_user import BaseUserManager, AbstractBaseUser
@@ -6,11 +7,10 @@ from django.db.models import Q
 
 from followers.models import UserFollowing
 from inbox.models import ThreadModel
-from posts.models import Post, PostLikes
+from posts.models import Post, PostLikes, Story
 
 
 # Create your models here.
-
 
 
 class MyAccountManager(BaseUserManager):
@@ -131,7 +131,6 @@ class UserProfile(models.Model):
         all_following_profiles = UserProfile.objects.filter(pk__in=list_of_id_users).all()
         return all_following_profiles
 
-
     def dm_suggestions(self):
         dm_suggestions = []
         following_users = UserFollowing.objects.filter(followed_by=self).order_by("-created_at").distinct()[:5]
@@ -149,7 +148,8 @@ class UserProfile(models.Model):
         # Get 2 most recent follows by user
         following_users = UserFollowing.objects.filter(followed_by=self).order_by("-created_at").distinct()[:2]
         # Get 2 most recent dm user
-        most_recent_dm = ThreadModel.objects.filter(Q(user=self) | Q(receiver=self)).order_by("-created_at").distinct()[:2]
+        most_recent_dm = ThreadModel.objects.filter(Q(user=self) | Q(receiver=self)).order_by("-created_at").distinct()[
+                         :2]
         for x in following_users:
             list_of_ids.append(x.followed_to.pk)
         for x in most_recent_dm:
@@ -169,7 +169,8 @@ class UserProfile(models.Model):
         following_users = UserFollowing.objects.filter(followed_by=self).order_by("-created_at").distinct().all()
         for x in following_users:
             profile_id_which_user_follows_actually.append(x.followed_to.pk)
-        follows_of_user_followings_query = UserFollowing.objects.filter(followed_by__pk__in=final_list_of_ids).order_by("-created_at").distinct()[:4]
+        follows_of_user_followings_query = UserFollowing.objects.filter(followed_by__pk__in=final_list_of_ids).order_by(
+            "-created_at").distinct()[:4]
         list_of_ids_which_my_followers_follow = []
         for x in follows_of_user_followings_query:
             list_of_ids_which_my_followers_follow.append(x.followed_to.pk)
@@ -187,14 +188,19 @@ class UserProfile(models.Model):
             top_followed_users.reverse()
             z = 0
             for x in top_followed_users:
-                if z != how_many_suggestions_to_fill and x.pk not in profile_id_which_user_follows_actually and x.pk not in ids_to_suggest and x.pk != self.pk :
+                if z != how_many_suggestions_to_fill and x.pk not in profile_id_which_user_follows_actually and x.pk not in ids_to_suggest and x.pk != self.pk:
                     top_followed_users_ids.append(x.pk)
                     z += 1
             top_followed_users_profiles = UserProfile.objects.filter(pk__in=top_followed_users_ids).all()
             suggestions = chain(suggestions, top_followed_users_profiles)
         return suggestions
 
-
-
-
-
+    def has_actual_story(self):
+        date_from = datetime.datetime.now() - datetime.timedelta(days=1)
+        valid_stories = []
+        all_user_stories = Story.objects.filter(user=self, created_at__gte=date_from).all()
+        for story in all_user_stories:
+            if story.expiration_date > datetime.datetime.now():
+                valid_stories.append(story)
+        has_stories = valid_stories
+        return has_stories
