@@ -204,3 +204,13 @@ class UserProfile(models.Model):
                 valid_stories.append(story)
         has_stories = valid_stories
         return has_stories
+
+    def user_story_urls(self):
+        date_from = datetime.datetime.now() - datetime.timedelta(days=1)
+        valid_stories = None
+        all_user_stories = Story.objects.filter(user=self, created_at__gte=date_from).all()
+        for story in all_user_stories:
+            if story.expiration_date > datetime.datetime.now():
+                valid_stories = story.story_image.url
+        has_stories = valid_stories
+        return has_stories
