@@ -1,3 +1,4 @@
+from PIL import Image
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
@@ -194,6 +195,9 @@ def create_story(request):
     current_user_profile = UserProfile.objects.filter(user_id=request.user.id).first()
     if request.method == "POST":
         story_image = request.FILES.get('story_image')
+        # x = Image.open(story_image.story_image.path)
+        # print(x.size)
+        # x.resize((800, 600), Image.ANTIALIAS)
         story = Story(user=current_user_profile, story_image=story_image)
         story.save()
     return redirect('user_profile', current_user_profile.user.username_slug)

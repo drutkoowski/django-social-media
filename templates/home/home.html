@@ -17,9 +17,11 @@
                                   <div class="row">
                                       <div class="col-lg-8 col-sm-8">
                                       {% if post.owner.has_actual_story %}
-{#                                          <a href="" onclick="window.open('{{ post.owner.user_story_urls }}l','targetWindow', 'toolbar=no, location=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=1090px, height=550px, top=25px left=120px'); return false;">click here</a>#}
-                                          <a href="{{ post.owner.user_story_urls }}" rel="lightbox" data-lightbox="image-1" data-title="My caption"><img class="avatar avatar-64 bg-light rounded-circle text-white image-id" src="{{ post.owner.profile_picture.url }}"></a>
-                                          <a class="text-decoration-none" href="{% url 'user_profile' post.owner.user.username_slug %}"><h4 class="card-title d-inline-block">{{ post.owner.user.username}}</h4></a>
+                                          {% for story in post.owner.user_story_urls %}
+                                          <a href="{{ story.story_image.url }}" rel="lightbox" data-lightbox="image-1" data-title="{{ post.owner.user.username }}'s Story">
+                                        {% endfor %}
+                                          <img class="avatar avatar-64 bg-light rounded-circle text-white image-id" src="{{ post.owner.profile_picture.url }}"></a>
+                                           <a class="text-decoration-none" href="{% url 'user_profile' post.owner.user.username_slug %}"><h4 class="card-title d-inline-block">{{ post.owner.user.username}}</h4></a>
                                       {% else %}
                                           <a class="text-decoration-none" href="{% url 'user_profile' post.owner.user.username_slug %}">
                                          <img class="avatar avatar-64 bg-light rounded-circle text-white" src="{{ post.owner.profile_picture.url }}">

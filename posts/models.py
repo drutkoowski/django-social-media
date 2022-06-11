@@ -1,10 +1,8 @@
 import datetime
 
-from django.db import models
-
-
-# Create your models here.
 from django.utils import timezone
+from django.db import models
+from django_resized import ResizedImageField
 
 
 class Post(models.Model):
@@ -60,9 +58,11 @@ class PostComments(models.Model):
 
 class Story(models.Model):
     user = models.ForeignKey("accounts.UserProfile", on_delete=models.CASCADE)
-    story_image = models.ImageField(upload_to='stories/')
+    story_image = ResizedImageField(crop=['middle', 'center'], size=[800, 600], quality=100, blank=True,
+                                       upload_to='stories/')
     created_at = models.DateTimeField(auto_now_add=True)
     is_saved = models.BooleanField(default=False)
+
     expiration_date = models.DateTimeField(default=timezone.now() + datetime.timedelta(days=1))
 
     def __str__(self):
@@ -70,4 +70,3 @@ class Story(models.Model):
 
     class Meta:
         verbose_name_plural = "Stories"
-
