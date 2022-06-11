@@ -90,7 +90,31 @@ def home(request):
         "current_user_profile":current_user_profile,
     }
     return render(request, "home/home.html", context)
+@login_required(login_url='login')
+def search(request):
+    if "keyword" in request.GET:
+        keyword = request.GET["keyword"]
+        if keyword:
+            users = UserProfile.objects.filter(user__username__icontains=keyword).all()
+            context = {
+                "users": users,
+            }
+            return render(request, "home/home.html", context)
+    posts = Post.objects.order_by("-created_at").all()
+    context = {
+        "posts": posts
+    }
+    return render(request, "home/home.html", context)
 
+
+def home_friends(request):
+    form = CommentForm()
+    current_user_profile = UserProfile.objects.filter(user=request.user).first()
+    context = {
+        "form": form,
+        "current_user_profile": current_user_profile
+    }
+    return render(request, "home/home_followed_only.html", context)
 
 @login_required(login_url='login')
 def logout(request):
@@ -142,33 +166,6 @@ def unfollow(request, user_id):
     find_user_to_unfollow = UserFollowing.objects.filter(followed_by=followed_by, followed_to=followed_to).first()
     find_user_to_unfollow.delete()
     return redirect("user_profile", followed_to.user.username_slug)
-
-
-@login_required(login_url='login')
-def search(request):
-    if "keyword" in request.GET:
-        keyword = request.GET["keyword"]
-        if keyword:
-            users = UserProfile.objects.filter(user__username__icontains=keyword).all()
-            context = {
-                "users": users,
-            }
-            return render(request, "home/home.html", context)
-    posts = Post.objects.order_by("-created_at").all()
-    context = {
-        "posts": posts
-    }
-    return render(request, "home/home.html", context)
-
-
-def home_friends(request):
-    form = CommentForm()
-    current_user_profile = UserProfile.objects.filter(user=request.user).first()
-    context = {
-        "form": form,
-        "current_user_profile": current_user_profile
-    }
-    return render(request, "home/home_followed_only.html", context)
 
 
 @login_required(login_url='login')

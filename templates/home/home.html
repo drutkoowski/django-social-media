@@ -89,9 +89,17 @@
                               <div class="card-body">
                                   <div class="row">
                                       <div class="col-lg-6 col-sm-4">
-                                           <a class="text-decoration-none" href="{% url 'user_profile' user.user.username_slug %}">
-                                          <img class="avatar avatar-64 bg-light rounded-circle text-white" src="{{ user.profile_picture.url }}">
-                                          <h4 class="card-title d-inline-block ml-2 pt-1">{{ user.user.username}}</h4></a>
+                                          {% if user.has_actual_story %}
+                                          {% for story in user.user_story_urls %}
+                                          <a href="{{ story.story_image.url }}" rel="lightbox" data-lightbox="image-1" data-title="{{ user.user.username }}'s Story">
+                                          {% endfor %}
+                                          <img class="avatar avatar-64 bg-light rounded-circle text-white image-id" src="{{ user.profile_picture.url }}" alt="avatar"></a>
+                                          <a class="text-decoration-none" href="{% url 'user_profile' user.user.username_slug %}"><h4 class="card-title d-inline-block ml-lg-1">{{ user.user.username}}</h4></a>
+                                      {% else %}
+                                          <a class="text-decoration-none" href="{% url 'user_profile' user.user.username_slug %}">
+                                        <img class="avatar avatar-64 bg-light rounded-circle text-white" src="{{ user.profile_picture.url }}" alt="avatar">
+                                        <h4 class="card-title d-inline-block">{{ user.user.username}}</h4></a>
+                                      {% endif %}
                                       </div>
                                   </div>
                                   <div class="row">
@@ -117,8 +125,7 @@
             {% endfor %}
         {% elif not users %}
         <div class="row mt-5">
-                    <div class="col-lg-2 col-sm-0"></div>
-                     <div class="col-lg-6 col-sm-12 p-0">
+                     <div class="col-lg-12 col-sm-12 p-0">
                          <div class="card p-0">
                              <div class="card-title text-center mt-4"><h3>We could not match your query.</h3></div>
                             <div class="card-body"><p><b>Why?</b></p>
@@ -128,17 +135,18 @@
         </div>
 {% endif %}
         </div>
+
     <div class="col-lg-4">
             <div class="row mt-2 d-md-none d-sm-none d-lg-block ml-3" style="position:fixed;">
                 <div class="col-12">
-                        <a class="text-decoration-none" href="{% url 'user_profile' current_user_profile.user.username_slug %}">
-                         <img class="avatar avatar-64 bg-light rounded-circle text-white {% if current_user_profile.has_actual_story%}image-id{% endif %}" src="{{ current_user_profile.profile_picture.url }}">
-                         <h4 class="card-title d-inline-block ml-2 pt-1">{{ current_user_profile.user.username }}</h4></a>
+                        <a class="text-decoration-none" href="{% url 'user_profile' get_current_user_profile.user.username_slug %}">
+                         <img class="avatar avatar-64 bg-light rounded-circle text-white {% if get_current_user_profile.has_actual_story%}image-id{% endif %}" src="{{ get_current_user_profile.profile_picture.url }}">
+                         <h4 class="card-title d-inline-block ml-2 pt-1">{{ get_current_user_profile.user.username }}</h4></a>
                 </div>
                 <div class="col-12 mt-3">
                     <p style="color:#9d9d9d">Suggestions For You</p>
                 </div>
-                {% for x in current_user_profile.following_suggestions %}
+                {% for x in get_current_user_profile.following_suggestions %}
                      <div class="col-12 mt-3">
                         <a class="text-decoration-none" href="{% url 'user_profile' x.user.username_slug %}">
                          <img class="avatar avatar-24 bg-light rounded-circle text-white" src="{{ x.profile_picture.url }}">
@@ -147,29 +155,15 @@
                 {% endfor %}
             </div>
     </div>
-    </div>
 
+    </div>
+{% if not 'search' in request.path %}
         <div class="row text-center mt-5">
             <p class="col-12 mt-5">We could not match any more posts for now.</p>
         </div>
+{% endif %}
 </div>
 
-{#    Modal for user actions #}
-    <div class="modal fade mt-5" id="modalUserActions" tabindex="-1" role="dialog" aria-labelledby="modalUserActions" aria-hidden="true">
-              <div class="modal-dialog mt-5" role="document">
-                <div class="modal-content">
-                  <div class="modal-header bg-primary text-light">
-                    <h5 class="modal-title" id="modalUserActions">Add Your Story</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true" class="text-light">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                        asdasdas
-                    </div>
-                </div>
-            </div>
-    </div>
 
 {% endblock %}
 
