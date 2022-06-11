@@ -212,7 +212,6 @@ def save_story(request, pk):
             story.save()
         else:
             category = request.POST['category']
-            print(category)
             category_object = StoryCategory.objects.filter(user=userprofile, category=category).first()
             story.category = category_object
             story.is_saved = True
