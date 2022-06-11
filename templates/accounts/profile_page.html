@@ -66,14 +66,12 @@
             {% if user_profile.get_saved_stories %}
                 <div class="mt-5"></div>
                 <div class="mt-5 ml-2">
-                {% for story in user_profile.get_saved_stories %}
-                    <figure class="figure">
-                    {% for story in user_profile.user_story_urls %}
-                        <a href="{{ story.story_image.url }}" rel="lightbox" data-lightbox="image-1" data-title="{{ user_profile.user.username }}'s Story">
+                {% for category in user_profile.get_story_categories %}
+                    {% for cat_story in category.all_category_stories %}
+                        <a href="{{ cat_story.story_image.url }}" rel="lightbox" data-lightbox="image-1" data-title="{{ cat_story }}'s Story">
                     {% endfor %}
-                        <img class="avatar avatar-96 bg-light rounded-circle text-white image-stories-profile" src="{{ story.story_image.url }}" alt="avatar">
-                        <figcaption class="figure-caption text-center mt-1"><a class="text-decoration-none mt-1" href="" data-toggle="modal" data-target="#modalUserActions"> Story category</a></figcaption></a>
-                    </figure>
+                    <img class="avatar avatar-64 bg-light rounded-circle text-white image-id" src="{{ category.first_of_category_story_url }}" alt="Stories"></a>
+                    <a class="text-decoration-none" href=""><h4 class="card-title d-inline-block">{{ category.category}}</h4></a>
                 {% endfor %}
                 </div>
                 <hr class="mt-3">

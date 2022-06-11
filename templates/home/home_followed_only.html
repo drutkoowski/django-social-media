@@ -150,9 +150,17 @@
         <div class="col-lg-4">
             <div class="row mt-2 d-md-none d-sm-none d-lg-block ml-3" style="position:fixed;">
                 <div class="col-12">
-                        <a class="text-decoration-none" href="{% url 'user_profile' current_user_profile.user.username_slug %}">
+                     {% if current_user_profile.has_actual_story %}
+                         {% for story in current_user_profile.user_story_urls %}
+                             <a href="{{ story.story_image.url }}" rel="lightbox" data-lightbox="image-1" data-title="{{ current_user_profile.user.username }}'s Story">
+                        {% endfor %}
+                     <img class="avatar avatar-64 bg-light rounded-circle text-white image-id" src="{{ current_user_profile.profile_picture.url }}" alt="avatar"></a>
+                         <a class="text-decoration-none" href="{% url 'user_profile' current_user_profile.user.username_slug %}"><h4 class="card-title d-inline-block">{{ current_user_profile.user.username}}</h4></a>
+                     {% else %}
+                         <a class="text-decoration-none" href="{% url 'user_profile' current_user_profile.user.username_slug %}">
                          <img class="avatar avatar-64 bg-light rounded-circle text-white" src="{{ current_user_profile.profile_picture.url }}">
                          <h4 class="card-title d-inline-block ml-2 pt-1">{{ current_user_profile.user.username }}</h4></a>
+                     {% endif %}
                 </div>
                 <div class="col-12 mt-3">
                     <p style="color:#9d9d9d">Suggestions For You</p>

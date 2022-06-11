@@ -15,4 +15,5 @@ urlpatterns = [
     path("stories/delete/<int:pk>", views.delete_story, name="delete_story"),
     path("stories/save/<int:pk>", views.save_story, name="save_story"),
     path("stories/category/create", views.create_category, name="create_category"),
+    path("stories/category/delete", views.delete_category, name="delete_category")
 ]

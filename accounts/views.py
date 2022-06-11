@@ -226,3 +226,16 @@ def create_category(request):
         story_category = StoryCategory(user=user_profile, category=category_name)
         story_category.save()
         return redirect(request.META.get('HTTP_REFERER'))
+
+
+def delete_category(request):
+    if request.method == "POST":
+        user_profile = UserProfile.objects.get(user=request.user)
+        category_name = request.POST.get('category_name_delete')
+
+        try:
+            story_category = StoryCategory.objects.filter(user=user_profile, category__iexact=category_name).first()
+            story_category.delete()
+        except:
+            pass
+        return redirect(request.META.get('HTTP_REFERER'))

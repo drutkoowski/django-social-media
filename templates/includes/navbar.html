@@ -61,11 +61,29 @@
                         <summary class="text-primary">Create New Category</summary>
                         <form action="{% url 'create_category' %}" method="post">
                           {% csrf_token %}
-                          <input type="text" class="form-control ml-2" name="category_name" placeholder="Category Name">
-                          <button class="btn btn-primary btn-submit mt-2 ml-2">Save Category</button>
+                          <input type="text" class="form-control form-control-sm ml-2" name="category_name" placeholder="Category Name">
+                          <button class="btn btn-sm btn-primary btn-submit mt-2 ml-2"><i class="fa-solid fa-plus"></i> Save Category</button>
                       </form>
                     </details>
                   </div>
+                   {% if get_current_user_profile.get_story_categories %}
+                     <div class="row">
+                          <details>
+                            <summary class="text-primary">Delete Category</summary>
+                            <form action="{% url 'delete_category' %}" method="post">
+                              {% csrf_token %}
+                             <select class="form-select ml-2 rounded text-primary b-0" name="category_name_delete" required>
+                                    <option selected>Category</option>
+                              {% for category in get_current_user_profile.get_story_categories%}
+                                  <option value="{{ category }}">{{ category.category }}</option>
+                              {% endfor %}
+                             </select>
+                              <button class="btn btn-primary btn-submit btn-sm mt-2 ml-2"><i class="fa-solid fa-trash-can"></i> Delete Category</button>
+                              </form>
+                            </details>
+                    </div>
+                  {% endif %}
+
                       <hr class="mt-4">
                       {% for story in get_current_user_profile.user_story_urls %}
                           <div class="row 100vh">
@@ -83,17 +101,17 @@
                                             {% endfor %}
                                         {% endif %}
                                     </select>
-                                    <button class="btn btn-primary btn-submit ml-2">Save Story</button>
+                                    <button class="btn btn-sm btn-primary btn-submit ml-2">Save Story</button>
                               </form>
                            {% else %}
                              <form action="{% url 'save_story' story.pk %}" method="post">
                                 {% csrf_token %}
-                                <button class="btn btn-primary btn-submit ml-2"><i class="fa-solid fa-circle-check"></i> Saved</button>
+                                <button class="btn btn-sm btn-primary btn-submit ml-2"><i class="fa-solid fa-circle-check"></i> Saved</button>
                               </form>
                               {% endif %}
                             <form action="{% url 'delete_story' story.pk %}" method="post">
                                 {% csrf_token %}
-                                <button class="btn btn-primary btn-submit ml-2"><i class="fa-solid fa-trash-can"></i> Delete Story</button>
+                                <button class="btn btn-sm btn-primary btn-submit ml-2"><i class="fa-solid fa-trash-can"></i> Delete Story</button>
                               </form>
                           <small class="ml-2 mt-2">Expiration Date: <b>{{ story.expiration_date }}</b><br>Created At: <b>{{ story.created_at }}</b></small>
 

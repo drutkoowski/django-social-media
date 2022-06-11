@@ -81,3 +81,11 @@ class StoryCategory(models.Model):
 
     def __str__(self):
         return self.category
+
+    def all_category_stories(self):
+        all_category_stories = Story.objects.filter(category__category=self.category, user=self.user).all()
+        return all_category_stories
+
+    def first_of_category_story_url(self):
+        first_category_story = Story.objects.filter(category__category=self.category, user=self.user).first()
+        return first_category_story.story_image.url
