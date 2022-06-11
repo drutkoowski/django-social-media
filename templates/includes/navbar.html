@@ -1,42 +1,6 @@
 {% load custom_tags %}
 {% load static %}
-<script>
-    const $dropdown = $(".dropdown");
-const $dropdownToggle = $(".dropdown-toggle");
-const $dropdownMenu = $(".dropdown-menu");
-const showClass = "show";
 
-$(window).on("load resize", function() {
-  if (this.matchMedia("(min-width: 768px)").matches) {
-    $dropdown.hover(
-      function() {
-        const $this = $(this);
-        $this.addClass(showClass);
-        $this.find($dropdownToggle).attr("aria-expanded", "true");
-        $this.find($dropdownMenu).addClass(showClass);
-      },
-      function() {
-        const $this = $(this);
-        $this.removeClass(showClass);
-        $this.find($dropdownToggle).attr("aria-expanded", "false");
-        $this.find($dropdownMenu).removeClass(showClass);
-      }
-    );
-  } else {
-    $dropdown.off("mouseenter mouseleave");
-  }
-});
-</script>
-<style>
-
-.dropdown-toggle::after {
-   transition: transform 0.15s linear;
-}
-
-.show.dropdown .dropdown-toggle::after {
-  transform: translateY(3px);
-}
-</style>
 <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light" style="z-index: 2000;border-bottom: solid 2px #e1e6ed;">
     <div class="container">
         <a href="{% url 'home_friends' %}"><img class="w-10 h-10 rounded text-center" src="https://www.instagram.com/static/images/web/logged_out_wordmark.png/7a252de00b20.png" alt=""></a>
@@ -65,17 +29,59 @@ $(window).on("load resize", function() {
                           <hr>
                         <a class="dropdown-item" href="{% url 'user_profile' user.username_slug %}"><i class="fa-solid fa-user text-primary"></i> Profile</a>
                         <a class="dropdown-item" href="{% url 'edit_profile' %}"><i class="fa-solid fa-pen-to-square text-primary"></i> Edit Profile</a>
-                          <a class="dropdown-item" href="{% url 'create_post' %}"><i class="fa-solid fa-square-plus text-primary"></i> Add post</a>
+                          <a class="dropdown-item" href="{% url 'create_post' %}"><i class="fa-solid fa-square-plus text-primary"></i> Add Post</a>
+                          {% if get_current_user_profile.has_actual_story %}
+                           <a class="dropdown-item" data-toggle="modal" data-target="#showStoriesModal" href=""><i class="fa-solid fa-pen text-primary"></i> Manage Your Stories</a>
+                          {% endif %}
                         <div class="dropdown-divider"></div>
                          <a class="dropdown-item text-primary" href="{% url 'logout' %}"><i class="fa-solid fa-power-off"></i> Logout</a>
                       </div>
 
-    </ul>
-      <form action="{% url 'search' %}" class="search mt-2 form-inline my-2 my-lg-0 ml-lg-3" method="get">
-          {% csrf_token %}
-          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="keyword">
-          <button class="btn btn-primary my-2 my-sm-0 submit" type="submit">Search</button>
-    </form>
-  </div>
-</div>
-    </nav>
+            </ul>
+              <form action="{% url 'search' %}" class="search mt-2 form-inline my-2 my-lg-0 ml-lg-3" method="get">
+                  {% csrf_token %}
+                  <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="keyword">
+                  <button class="btn btn-primary my-2 my-sm-0 submit" type="submit">Search</button>
+            </form>
+          </div>
+        </div>
+</nav>
+<div class="modal fade mt-5" id="showStoriesModal" tabindex="-1" role="dialog" aria-labelledby="showStoriesModal" aria-hidden="true">
+              <div class="modal-dialog mt-5" role="document">
+                <div class="modal-content">
+                  <div class="modal-header bg-primary text-light">
+                    <h5 class="modal-title" id="showStoriesModal">Choose Story And Its Action</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true" class="text-light">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                      {% for story in get_current_user_profile.user_story_urls %}
+                          <div class="row 100vh">
+                              <img src="{{ story.story_image.url }}" class="img-responsive" style="max-height: 100%; max-width: 100%;" alt="story image">
+                          </div>
+                          <div class="row mt-1">
+                          {% if not story.is_saved %}
+                              <form action="{% url 'save_story' story.pk %}" method="post">
+                                {% csrf_token %}
+                                <button class="btn btn-primary btn-submit">Save Story</button>
+                              </form>
+                           {% else %}
+                             <form action="{% url 'save_story' story.pk %}" method="post">
+                                {% csrf_token %}
+                                <button class="btn btn-primary btn-submit"><i class="fa-solid fa-circle-check"></i> Saved</button>
+                              </form>
+                              {% endif %}
+                            <form action="{% url 'delete_story' story.pk %}" method="post">
+                                {% csrf_token %}
+                                <button class="btn btn-primary btn-submit ml-2"><i class="fa-solid fa-trash-can"></i> Delete Story</button>
+                              </form>
+                          <small class="ml-2 mt-2">Expiration Date: <b>{{ story.expiration_date }}</b><br>Created At: <b>{{ story.created_at }}</b></small>
+
+                          </div>
+                          <hr>
+                      {% endfor %}
+                    </div>
+                </div>
+            </div>
+    </div>

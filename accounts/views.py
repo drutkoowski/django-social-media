@@ -1,8 +1,5 @@
-from PIL import Image
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
-
 from inbox.models import Notification
 from .forms import UserForm, UserSignUpForm, EditProfileForm
 from posts.forms import CommentForm, StoryForm
@@ -10,8 +7,6 @@ from accounts.models import Account, UserProfile
 from django.contrib import messages, auth
 from posts.models import Post, Story
 from followers.models import UserFollowing
-
-
 
 
 # Create your views here.
@@ -87,9 +82,11 @@ def home(request):
     context = {
         "posts": all_posts,
         "form": form,
-        "current_user_profile":current_user_profile,
+        "current_user_profile": current_user_profile,
     }
     return render(request, "home/home.html", context)
+
+
 @login_required(login_url='login')
 def search(request):
     if "keyword" in request.GET:
@@ -115,6 +112,7 @@ def home_friends(request):
         "current_user_profile": current_user_profile
     }
     return render(request, "home/home_followed_only.html", context)
+
 
 @login_required(login_url='login')
 def logout(request):
@@ -192,9 +190,21 @@ def create_story(request):
     current_user_profile = UserProfile.objects.filter(user_id=request.user.id).first()
     if request.method == "POST":
         story_image = request.FILES.get('story_image')
-        # x = Image.open(story_image.story_image.path)
-        # print(x.size)
-        # x.resize((800, 600), Image.ANTIALIAS)
         story = Story(user=current_user_profile, story_image=story_image)
         story.save()
     return redirect('user_profile', current_user_profile.user.username_slug)
+
+
+def delete_story(request, pk):
+    if request.method == "POST":
+        story = get_object_or_404(Story, pk=pk)
+        story.delete()
+        return redirect(request.META.get('HTTP_REFERER'))
+
+
+def save_story(request, pk):
+    if request.method == "POST":
+        story = get_object_or_404(Story, pk=pk)
+        story.is_saved = True
+        story.save()
+        return redirect(request.META.get('HTTP_REFERER'))

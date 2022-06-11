@@ -1,5 +1,4 @@
-from posts.models import PostLikes
-from .models import Account, UserProfile, Post
+from .models import UserProfile, Post
 from django.contrib.auth.models import AnonymousUser
 
 
@@ -48,5 +47,3 @@ def get_current_user_profile(request):
     user = request.user
     userprofile = UserProfile.objects.filter(user=user).first()
     return dict(get_current_user_profile=userprofile)
-
-

@@ -53,3 +53,11 @@
   80% { border-color: #f9a825 }
   100% { border-color: #ff5722 }
 }
+
+.dropdown-toggle::after {
+   transition: transform 0.15s linear;
+}
+
+.show.dropdown .dropdown-toggle::after {
+  transform: translateY(3px);
+}
