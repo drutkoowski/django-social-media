@@ -1,13 +1,12 @@
 import datetime
 from itertools import chain
-from random import choice
 from django.contrib.auth.base_user import BaseUserManager, AbstractBaseUser
 from django.db import models
 from django.db.models import Q
 
 from followers.models import UserFollowing
 from inbox.models import ThreadModel
-from posts.models import Post, PostLikes, Story
+from posts.models import Post, PostLikes, Story, StoryCategory
 
 
 # Create your models here.
@@ -208,8 +207,15 @@ class UserProfile(models.Model):
         else:
             return False
 
-
     def user_story_urls(self):
         date_from = datetime.datetime.now() + datetime.timedelta(days=1)
         all_user_stories = Story.objects.filter(user=self, expiration_date__lt=date_from).all()
         return all_user_stories
+
+    def get_saved_stories(self):
+        all_saved_user_stories = Story.objects.filter(user=self, is_saved=True).all()
+        return all_saved_user_stories
+
+    def get_story_categories(self):
+        user_story_categories = StoryCategory.objects.filter(user=self).all()
+        return user_story_categories

@@ -59,14 +59,25 @@ class PostComments(models.Model):
 class Story(models.Model):
     user = models.ForeignKey("accounts.UserProfile", on_delete=models.CASCADE)
     story_image = ResizedImageField(crop=['middle', 'center'], size=[800, 600], quality=100, blank=True,
-                                       upload_to='stories/')
+                                    upload_to='stories/')
     created_at = models.DateTimeField(auto_now_add=True)
     is_saved = models.BooleanField(default=False)
-
     expiration_date = models.DateTimeField(default=timezone.now() + datetime.timedelta(days=1))
+    category = models.ForeignKey("posts.StoryCategory", on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
         return f"{self.user.user.username}"
 
     class Meta:
         verbose_name_plural = "Stories"
+
+
+class StoryCategory(models.Model):
+    user = models.ForeignKey("accounts.UserProfile", on_delete=models.CASCADE)
+    category = models.CharField(max_length=50)
+
+    class Meta:
+        verbose_name_plural = "Story Categories"
+
+    def __str__(self):
+        return self.category

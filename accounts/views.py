@@ -5,7 +5,7 @@ from .forms import UserForm, UserSignUpForm, EditProfileForm
 from posts.forms import CommentForm, StoryForm
 from accounts.models import Account, UserProfile
 from django.contrib import messages, auth
-from posts.models import Post, Story
+from posts.models import Post, Story, StoryCategory
 from followers.models import UserFollowing
 
 
@@ -204,7 +204,26 @@ def delete_story(request, pk):
 
 def save_story(request, pk):
     if request.method == "POST":
+        userprofile = UserProfile.objects.get(user=request.user)
         story = get_object_or_404(Story, pk=pk)
-        story.is_saved = True
-        story.save()
+        if story.is_saved:
+            story.category = None
+            story.is_saved = False
+            story.save()
+        else:
+            category = request.POST['category']
+            print(category)
+            category_object = StoryCategory.objects.filter(user=userprofile, category=category).first()
+            story.category = category_object
+            story.is_saved = True
+            story.save()
+        return redirect(request.META.get('HTTP_REFERER'))
+
+
+def create_category(request):
+    if request.method == "POST":
+        user_profile = UserProfile.objects.get(user=request.user)
+        category_name = request.POST.get('category_name')
+        story_category = StoryCategory(user=user_profile, category=category_name)
+        story_category.save()
         return redirect(request.META.get('HTTP_REFERER'))

@@ -54,6 +54,23 @@
   100% { border-color: #ff5722 }
 }
 
+
+.image-stories-profile {
+  border: solid 3px;
+  animation: stories 5s linear infinite;
+}
+
+@keyframes stories {
+  	0% { border-color: #B0B0B0 }
+	25% { border-color: #C0C0C0 }
+  	50% { border-color: #D3D3D3 }
+	70% { border-color: #E8E8E8 }
+  	100% { border-color: #B0B0B0 }
+}
+
+
+
+
 .dropdown-toggle::after {
    transition: transform 0.15s linear;
 }

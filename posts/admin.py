@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Post, PostLikes, PostComments, Story
+from .models import Post, PostLikes, PostComments, Story, StoryCategory
 
 
 # Register your models here.
@@ -36,7 +36,15 @@ class StoryAdmin(admin.ModelAdmin):
     fieldsets = ()
 
 
+class StoryCategoryAdmin(admin.ModelAdmin):
+    list_display = ("user", "category")
+    filter_horizontal = ()
+    list_filter = ()
+    fieldsets = ()
+
+
 admin.site.register(Post, PostAdmin)
 admin.site.register(PostLikes, PostLikesAdmin)
 admin.site.register(PostComments, PostCommentsAdmin)
 admin.site.register(Story, StoryAdmin)
+admin.site.register(StoryCategory, StoryCategoryAdmin)
