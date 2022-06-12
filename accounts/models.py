@@ -220,3 +220,31 @@ class UserProfile(models.Model):
         user_story_categories = StoryCategory.objects.filter(user=self).all()
         return user_story_categories
 
+    def get_all_profiles_followed_who_have_story_first(self):
+        all_followed_by_user = UserFollowing.objects.filter(followed_by=self).all()
+        pk_list_of_followed = []
+        for followed in all_followed_by_user:
+            pk_list_of_followed.append(followed.followed_to.user.pk)
+        stories_of_followed = Story.objects.filter(is_saved=False, user__pk__in=pk_list_of_followed).all()
+        pk_of_stories_users_followed = []
+        for stories in stories_of_followed:
+            pk_of_stories_users_followed.append(stories.user.pk)
+        all_followed_stories = UserProfile.objects.filter(pk__in=pk_of_stories_users_followed).order_by("-user__date_joined").all()[:6]
+        return all_followed_stories
+
+    def get_all_profiles_followed_who_have_story_second(self):
+        all_followed_by_user = UserFollowing.objects.filter(followed_by=self).all()
+        pk_list_of_followed = []
+        for followed in all_followed_by_user:
+            pk_list_of_followed.append(followed.followed_to.user.pk)
+        stories_of_followed = Story.objects.filter(is_saved=False, user__pk__in=pk_list_of_followed).all()
+        pk_of_stories_users_followed = []
+        for stories in stories_of_followed:
+            pk_of_stories_users_followed.append(stories.user.pk)
+        all_followed_stories = UserProfile.objects.filter(pk__in=pk_of_stories_users_followed).all()[6:]
+        return all_followed_stories
+
+    def get_all_unsaved_stories(self):
+        unsaved_stories = Story.objects.filter(is_saved=False, user=self).all()
+        return unsaved_stories
+
