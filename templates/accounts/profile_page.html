@@ -29,34 +29,33 @@
 
                 <div class="col-lg-8 col-sm-12 mt-4">
                       <div class="row mt-4">
-
-                              <div class="col-lg-2 col-sm-4 text-center">
+                              <div class="col-lg-2 col-sm-4 text-lg-left ml-lg-2 text-center">
                                   <h3 class="text-primary">{{ user_profile.user.username }}</h3>
                               </div>
-
-                                <div class="col-lg-3 col-sm-8">
+                                <div class="col-lg-3 col-sm-4">
+                                {% if not user_profile.user.pk == get_current_user_profile.user.pk %}
                                       {% if not is_followed %}
                                       <form action="{% url 'user_profile' user_profile.user.username_slug %}" method="post">
                                           {% csrf_token %}
                                         <button class="btn btn-sm btn-primary text-light btn-submit rounded mt-1 btn-block">Follow</button>
                                       </form>
                                       {% else %}
-                                            <form action="{% url 'unfollow' user_profile.user.id %}" method="post">
-                                            {% csrf_token %}
+                                                <form action="{% url 'unfollow' user_profile.user.id %}" method="post">
+                                                {% csrf_token %}
                                                 <button class="btn btn-primary btn-sm rounded text-light btn-submit mt-1 btn-block">Unfollow</button>
 
                                       </form>
                                       {% endif %}
+                                {% endif %}
                                   </div>
 
-                                <div class="col-lg-7 col-sm-0"></div>
+                                <div class="col-lg-7 col-sm-4"></div>
                       </div>
                             <div class="row text-lg-left">
                                 <div class="col-12 mt-2 ml-lg-2"><small>{{ user_profile.bio }}</small></div>
                             </div>
                             <div class="row mt-4 text-lg-left">
-                                  <div class="col-lg-2 col-4 active-color mt-2 mt-lg-0"><button class="bg-light text-dark btn-light btn-sm btn rounded"><b>{{ user_profile.posts_count }}</b>
-                                      Posts</button> </div>
+                                <div class="col-lg-2 col-4 active-color mt-2 mt-lg-0 "><button class="bg-light text-dark btn-light btn-sm btn rounded"><b>{{ user_profile.posts_count }}</b> Posts</button></div>
                                   <div class="col-lg-2 col-4 active-color mt-2 mt-lg-0"><button class="bg-light text-dark btn-light btn-sm btn rounded" data-toggle="modal" data-target="#exampleModal"><b>{{ user_profile.followers_count }}</b> Followers</button></div>
                                   <div class="col-lg-2 col-4 active-color mt-2 mt-lg-0"><button class="bg-light text-dark btn-light btn-sm btn rounded" data-toggle="modal" data-target="#exampleModal2"><b>{{ user_profile.following_count }}</b> Following</button></div>
                             </div>
