@@ -219,3 +219,4 @@ class UserProfile(models.Model):
     def get_story_categories(self):
         user_story_categories = StoryCategory.objects.filter(user=self).all()
         return user_story_categories
+

@@ -65,19 +65,25 @@
             </div>
             {% if user_profile.get_saved_stories %}
                 <div class="mt-5"></div>
-                <div class="mt-5 ml-2">
+                <div class="row mt-5 ml-2">
                 {% for category in user_profile.get_story_categories %}
+                    {% if category.first_of_category_story_url is not None %}
+                     <figure class="figure ml-4">
                     {% for cat_story in category.all_category_stories %}
-                        <a href="{{ cat_story.story_image.url }}" rel="lightbox" data-lightbox="image-1" data-title="{{ cat_story }}'s Story">
+                        <a href="{{ cat_story.story_image.url }}" data-lightbox="{{ cat_story.category }}" data-title="{{ cat_story.category }}: {{ cat_story.user.user.username }}'s Story">
                     {% endfor %}
-                    <img class="avatar avatar-64 bg-light rounded-circle text-white image-id" src="{{ category.first_of_category_story_url }}" alt="Stories"></a>
-                    <a class="text-decoration-none" href=""><h4 class="card-title d-inline-block">{{ category.category}}</h4></a>
+                    <img class="avatar avatar-64 bg-light rounded-circle text-white image-stories-profile" src="{{ category.first_of_category_story_url }}" alt="Stories"></a>
+                    <figcaption class="text-center"><a class="text-decoration-none" href=""><small class="card-title">{{ category.category}}</small></a></figcaption>
+                </figure>
+                    {% endif %}
                 {% endfor %}
                 </div>
                 <hr class="mt-3">
             {% else %}
                 <hr class="mt-5">
             {% endif %}
+
+
             <div class="row">
             {% if posts %}
                 {% for post in posts %}

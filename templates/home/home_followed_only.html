@@ -158,7 +158,7 @@
                          <a class="text-decoration-none" href="{% url 'user_profile' current_user_profile.user.username_slug %}"><h4 class="card-title d-inline-block">{{ current_user_profile.user.username}}</h4></a>
                      {% else %}
                          <a class="text-decoration-none" href="{% url 'user_profile' current_user_profile.user.username_slug %}">
-                         <img class="avatar avatar-64 bg-light rounded-circle text-white" src="{{ current_user_profile.profile_picture.url }}">
+                         <img class="avatar avatar-64 bg-light rounded-circle text-white" src="{{ current_user_profile.profile_picture.url }}" alt="avatar">
                          <h4 class="card-title d-inline-block ml-2 pt-1">{{ current_user_profile.user.username }}</h4></a>
                      {% endif %}
                 </div>
