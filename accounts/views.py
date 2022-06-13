@@ -66,7 +66,7 @@ def signup(request):
             profile.user = user
             profile.profile_picture = "userprofile/default_user.png"
             profile.save()
-            messages.error(request, "User successfully created, activation link has been sent to your email address.")
+            messages.success(request, "User successfully created, activation link has been sent to your email address.")
             current_site = get_current_site(request)
             mail_subject = "Please activate your account"
             message = render_to_string("accounts/account_verification_email.html", {
