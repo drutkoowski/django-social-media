@@ -1,9 +1,13 @@
 {% extends 'base.html' %}
 {% block styles %}
-    <style>html, body {margin: 0; height: 100%; overflow: hidden}</style>
+    <style>html, body {margin: 0; height: 100%; overflow: hidden}
+    @media screen and (max-width: 1247px) {
+    .mobile-space {margin-top:0!important;overflow: scroll!important;}
+    }
+    </style>
 {% endblock %}
 {% block content %}
-    <div class="container vh-100 mt-4">
+    <div class="container vh-100 mt-4 mobile-space">
         <div class="row mt-4">
             <div class="col-lg-12 col-sm-12 mt-4">
                 <form action="{% url 'signup' %}" method="post">
@@ -39,8 +43,31 @@
 {#            Footer #}
 
         </div>
-    <div class="fixed-bottom">
-        {% include 'includes/footer.html' %}
-    </div>
+     <div class="row d-lg-none mt-5"></div>
+    <div class="row d-lg-none mt-5"></div>
+  <div class="navbar-fixed-bottom mt-5">
+                <div class="col-12">
+                    <div class="row">
+                        <div class="mx-auto col-4 text-center">
+                            <a class="text-decoration-none text-secondary" href="https://github.com/drutkoowski"><i class="fa-brands fa-github"></i> Github</a>
+                        </div>
+                         <div class="col-4 text-center">
+                             <a class="text-decoration-none text-secondary" href="https://www.facebook.com/drutkoowski/"><i class="fa-brands fa-facebook"></i> Facebook</a>
+                        </div>
+                         <div class="mx-auto col-4 text-center">
+                             <a class="text-decoration-none text-secondary" href="mailto:d.rutkowski2000@gmail.com" target="_blank"><i class="fa-solid fa-envelope"></i> Contact </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="row">
+                        <div class="col-12 mb-2 mt-2 text-center text-secondary">
+                           © 2022 Copyright Damian Rutkowski
+                        </div>
+                    </div>
+                </div>
+            </div>
+</body>
+</html>
     </div>
 {% endblock %}
