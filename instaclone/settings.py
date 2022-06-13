@@ -132,6 +132,9 @@ USE_TZ = False
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / "staticfiles"
+
+
+
 # STATICFILES_DIRS = [
 #     "instaclone/static",
 # ]
