@@ -1,0 +1,9 @@
+{% autoescape off %}
+    {% csrf_token %}
+    Hi {{ user.first_name }},
+
+    Please click on link below to confirm your registration process.
+    http://{{domain}}{% url 'activate' uidb64=uid token=token %}
+
+    In case you think it's not you, ignore this email.
+{% endautoescape %}

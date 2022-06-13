@@ -248,3 +248,7 @@ class UserProfile(models.Model):
         unsaved_stories = Story.objects.filter(is_saved=False, user=self).all()
         return unsaved_stories
 
+
+# class StoryViewsModel(models.Model):
+#     user = models.ForeignKey("accounts.UserProfile", on_delete=models.CASCADE)
+#     story = models.ForeignKey("posts.Story", on_delete=models.CASCADE)

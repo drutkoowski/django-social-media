@@ -21,7 +21,7 @@
                                 <div class="col-2">
                                     {% for user in get_current_user_profile.get_all_profiles_followed_who_have_story_first %}
                                         {% for story in user.get_all_unsaved_stories %}
-                                            <a href="{{ story.story_image.url }}" rel="lightbox" data-lightbox="{{ story.user.user.username }}" data-title="{{ story.user.user.username }}'s Story">
+                                            <a href="{{ story.story_image.url }}" rel="lightbox" data-lightbox="{{ story.user.user.username }}" data-title="{{ story.user.user.username }}'s Story" onclick="">
                                          {% endfor %}
                                         <img class="avatar avatar-48 bg-light rounded-circle text-white image-id" src="{{ user.profile_picture.url }}" alt="avatar"></a>
                                         <br>

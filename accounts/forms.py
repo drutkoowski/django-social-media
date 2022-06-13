@@ -52,3 +52,14 @@ class EditProfileForm(forms.ModelForm):
         for field in self.fields:
             self.fields[field].widget.attrs['class'] = 'form-control'
 
+
+class ForgotPasswordForm(forms.ModelForm):
+    class Meta:
+        model = Account
+        fields = ('email',)
+
+    def __init__(self, *args, **kwargs):
+        super(ForgotPasswordForm, self).__init__(*args, **kwargs)
+        self.fields["email"].widget.attrs["placeholder"] = "Enter email associated with your account"
+        for field in self.fields:
+            self.fields[field].widget.attrs['class'] = 'form-control'

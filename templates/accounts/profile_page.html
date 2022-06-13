@@ -90,7 +90,7 @@
             {% if posts %}
                 {% for post in posts %}
                 <div class="col-lg-4 col-sm-12">
-                <div class="card mt-4">
+                <div class="card mt-4" style="height: 40rem">
                               <div class="card-body">
                               {% if viewer_profile.user.pk == user_profile.user.pk %}
                               <div class="row">
@@ -116,7 +116,7 @@
                                   <p class="card-text">Likes: {{ post.post_likes }}</p>
                                     {% if post.view_recent_comments %}
                                     <small class="d-block"><b>Comments</b> <a class="text-decoration-none" href="{% url 'single_post' post.id %}">See all ({{ post.post_comments }})</a></small>
-                                  {% endif %}
+                                    {% endif %}
                                     <p class="card-text mt-2">{{ post.created_at }}</p>
                               </div>
                         </div>
