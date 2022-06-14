@@ -130,8 +130,8 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+# STATIC_URL = '/static/'
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'instaclone/static')
 ]
@@ -151,7 +151,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 
-MEDIA_URL = '/media/'
+# MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DJANGORESIZED_DEFAULT_SIZE = [1920, 1080]
@@ -181,6 +181,19 @@ AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY', cast=str)
 AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME', cast=str)
 
 AWS_S3_FILE_OVERWRITE = False
-AWS_DEFAULT_ACL = None
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Static3Storage'
+AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
+AWS_DEFAULT_ACL = 'public-read'
+AWS_S3_OBJECT_PARAMETERS = {
+    "CacheControl": 'max-age=86400'
+
+}
+AWS_LOCATION = 'static'
+AWS_QUERYSTRING_AUTH = False
+AWS_HEADERS = {
+    "Access-Control-Allow-Origin": "*",
+}
+STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
+MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
+
