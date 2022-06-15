@@ -18,16 +18,16 @@
                         <!-- Wrapper for carousel items -->
                         <div class="carousel-inner text-left ml-3 ml-lg-5">
                             <div class="carousel-item active p-2">
-                                <div class="col-2">
-                                    {% for user in get_current_user_profile.get_all_profiles_followed_who_have_story_first %}
+                                 {% for user in get_current_user_profile.get_all_profiles_followed_who_have_story_first %}
+                                     <div class="col-2">
                                         {% for story in user.get_all_unsaved_stories %}
                                             <a href="{{ story.story_image.url }}" rel="lightbox" data-lightbox="{{ story.user.user.username }}" data-title="{{ story.user.user.username }}'s Story" onclick="">
                                          {% endfor %}
                                         <img class="avatar avatar-48 bg-light rounded-circle text-white image-id" src="{{ user.profile_picture.url }}" alt="avatar"></a>
                                         <br>
                                         <a class="text-decoration-none" href="{% url 'user_profile' user.user.username_slug %}"><small class="card-title d-inline-block ml-2">{{ user.user.username}}</small></a>
-                                    {% endfor %}
-                                    </div>
+                                     </div>
+                                 {% endfor %}
                             </div>
                         {% if get_current_user_profile.get_all_profiles_followed_who_have_story_second  %}
                             <div class="carousel-item p-2">
