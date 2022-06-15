@@ -58,7 +58,7 @@
                                <form action="{% url 'add_comment' post.id %}" method="post">
                                    {% csrf_token %}
                                        <div class="row mt-4">
-                                           <div class="col-2">
+                                           <div class="col-lg-1 col-2">
                                                <a class="d-inline-block" href="{% url 'user_profile' user.username_slug %}"> <img class="avatar avatar-32 bg-light rounded-circle bg-primary text-white d-inline-block" src="{{ get_avatar }}" alt="avatar"></a>
                                            </div>
                                            {% for field in form %}
