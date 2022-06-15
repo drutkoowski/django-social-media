@@ -49,7 +49,7 @@
                                         <small class="d-block mt-3"><b>Recent Comments</b> <a class="text-decoration-none" href="{% url 'single_post' post.id %}">See all ({{ post.post_comments }})</a></small>
                                    {% for comment in post.view_recent_comments %}
                                         <a class="text-decoration-none" href="{% url 'user_profile' comment.user.user.username_slug %}">
-                                          <img class="avatar avatar-32 bg-light rounded-circle text-white" src="{{ post.owner.profile_picture.url }}" alt="avatar">
+                                          <img class="avatar avatar-32 bg-light rounded-circle text-white" src="{{ comment.user.profile_picture.url }}" alt="avatar">
                                           <small class="card-title d-inline-block"><span><b>{{ comment.user }}</b></span>: {{ comment.content }}</small></a><span><small> {{ comment.created_at }}</small></span>
                                        <br>
                                    {% endfor %}
