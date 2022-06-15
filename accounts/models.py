@@ -225,7 +225,7 @@ class UserProfile(models.Model):
         pk_list_of_followed = []
         for followed in all_followed_by_user:
             pk_list_of_followed.append(followed.followed_to.user.pk)
-        stories_of_followed = Story.objects.filter(is_saved=False, user__pk__in=pk_list_of_followed).all()
+        stories_of_followed = Story.objects.filter(is_saved=False, user__user__pk__in=pk_list_of_followed).all()
         pk_of_stories_users_followed = []
         for stories in stories_of_followed:
             pk_of_stories_users_followed.append(stories.user.pk)
@@ -237,11 +237,11 @@ class UserProfile(models.Model):
         pk_list_of_followed = []
         for followed in all_followed_by_user:
             pk_list_of_followed.append(followed.followed_to.user.pk)
-        stories_of_followed = Story.objects.filter(is_saved=False, user__pk__in=pk_list_of_followed).all()
+        stories_of_followed = Story.objects.filter(is_saved=False, user__user__pk__in=pk_list_of_followed).all()
         pk_of_stories_users_followed = []
         for stories in stories_of_followed:
             pk_of_stories_users_followed.append(stories.user.pk)
-        all_followed_stories = UserProfile.objects.filter(pk__in=pk_of_stories_users_followed).all()[6:]
+        all_followed_stories = UserProfile.objects.filter(user__pk__in=pk_of_stories_users_followed).all()[6:]
         return all_followed_stories
 
     def get_all_unsaved_stories(self):
