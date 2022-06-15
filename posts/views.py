@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 
 from inbox.models import Notification
@@ -8,6 +9,7 @@ from django.contrib import messages
 
 
 # Create your views here.
+@login_required(login_url='login')
 def create_post(request):
     if request.method == "POST":
         user = request.user
@@ -24,6 +26,7 @@ def create_post(request):
     return render(request, "posts/create_post.html", context=context)
 
 
+@login_required(login_url='login')
 def like_post(request, post_id):
     current_user_profile = UserProfile.objects.filter(user=request.user).first()
     post = Post.objects.filter(pk=post_id).first()
@@ -31,7 +34,7 @@ def like_post(request, post_id):
     is_liked_already = PostLikes.objects.filter(post=post, user=liking_user_profile).first()
     if is_liked_already:
         is_liked_already.delete()
-        return redirect(request.META.get('HTTP_REFERER', 'home')+f"#{post.id}")
+        return redirect(request.META.get('HTTP_REFERER', 'home') + f"#{post.id}")
     post_like = PostLikes(user=liking_user_profile, post=post)
     post_like.save()
     notification = Notification.objects.create(
@@ -40,9 +43,10 @@ def like_post(request, post_id):
         to_user=post.owner,
         post=post
     )
-    return redirect(request.META.get('HTTP_REFERER', 'home')+f"#{post.id}")
+    return redirect(request.META.get('HTTP_REFERER', 'home') + f"#{post.id}")
 
 
+@login_required(login_url='login')
 def single_post(request, post_id):
     form = CommentForm()
     post = Post.objects.filter(pk=post_id).first()
@@ -57,6 +61,7 @@ def single_post(request, post_id):
     return render(request, "posts/single_post.html", context)
 
 
+@login_required(login_url='login')
 def add_comment(request, post_id):
     if request.method == "POST":
         post = Post.objects.filter(pk=post_id).first()
@@ -73,6 +78,7 @@ def add_comment(request, post_id):
     return redirect('single_post', post_id)
 
 
+@login_required(login_url='login')
 def edit_post(request, post_id):
     if request.method == "POST":
         post = get_object_or_404(Post, pk=post_id)
@@ -90,6 +96,7 @@ def edit_post(request, post_id):
     return render(request, "posts/edit_post.html", context)
 
 
+@login_required(login_url='login')
 def delete_post(request, post_id):
     user = request.user
     userprofile = UserProfile.objects.get(user=user)
@@ -97,4 +104,3 @@ def delete_post(request, post_id):
     if post:
         post.delete()
     return redirect('user_profile', userprofile.user.username_slug)
-

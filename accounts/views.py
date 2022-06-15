@@ -188,7 +188,7 @@ def unfollow(request, user_id):
 def edit_profile(request):
     userprofile = get_object_or_404(UserProfile, user=request.user)
     if request.method == "POST":
-        user_profile_edit_form = EditProfileForm(request.POST, instance=userprofile)
+        user_profile_edit_form = EditProfileForm(request.POST, request.FILES, instance=userprofile)
         if user_profile_edit_form.is_valid():
             user_profile_edit_form.save()
             messages.success(request, 'Your profile has been updated!')
@@ -203,7 +203,7 @@ def edit_profile(request):
 
     return render(request, "accounts/edit_profile.html", context)
 
-
+@login_required(login_url='login')
 def create_story(request):
     current_user_profile = UserProfile.objects.filter(user_id=request.user.id).first()
     if request.method == "POST":
@@ -212,14 +212,14 @@ def create_story(request):
         story.save()
     return redirect('user_profile', current_user_profile.user.username_slug)
 
-
+@login_required(login_url='login')
 def delete_story(request, pk):
     if request.method == "POST":
         story = get_object_or_404(Story, pk=pk)
         story.delete()
         return redirect(request.META.get('HTTP_REFERER'))
 
-
+@login_required(login_url='login')
 def save_story(request, pk):
     if request.method == "POST":
         userprofile = UserProfile.objects.get(user=request.user)
@@ -236,7 +236,7 @@ def save_story(request, pk):
             story.save()
         return redirect(request.META.get('HTTP_REFERER'))
 
-
+@login_required(login_url='login')
 def create_category(request):
     if request.method == "POST":
         user_profile = UserProfile.objects.get(user=request.user)
@@ -245,7 +245,7 @@ def create_category(request):
         story_category.save()
         return redirect(request.META.get('HTTP_REFERER'))
 
-
+@login_required(login_url='login')
 def delete_category(request):
     if request.method == "POST":
         user_profile = UserProfile.objects.get(user=request.user)

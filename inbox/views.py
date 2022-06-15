@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
@@ -9,7 +10,7 @@ from django.contrib import messages
 # Create your views here.
 from posts.models import Post
 
-
+@login_required(login_url='login')
 def inbox(request):
     user_profile = UserProfile.objects.get(user=request.user)
     threads = ThreadModel.objects.filter(Q(user=user_profile) | Q(receiver=user_profile))
@@ -20,7 +21,7 @@ def inbox(request):
     }
     return render(request, "inbox/inbox.html", context)
 
-
+@login_required(login_url='login')
 def thread(request, pk):
     form = MessageForm()
     current_user_profile = UserProfile.objects.get(user=request.user)
@@ -34,7 +35,7 @@ def thread(request, pk):
     }
     return render(request, "inbox/thread.html", context)
 
-
+@login_required(login_url='login')
 def create_thread(request):
     current_user_profile = UserProfile.objects.get(user=request.user)
     if request.method == "POST":
@@ -64,7 +65,7 @@ def create_thread(request):
     }
     return render(request, "inbox/create_thread.html", context)
 
-
+@login_required(login_url='login')
 def create_message(request, pk):
     if request.method == "POST":
         requested_user_profile = UserProfile.objects.get(user=request.user)
@@ -89,7 +90,7 @@ def create_message(request, pk):
         )
         return redirect('thread', pk=pk)
 
-
+@login_required(login_url='login')
 def create_thread_click(request, user_pk):
     current_user_profile = UserProfile.objects.get(user=request.user)
     requested_user_profile = UserProfile.objects.get(pk=user_pk)
@@ -106,7 +107,6 @@ def create_thread_click(request, user_pk):
     except:
         messages.warning(request, "Invalid username")
         return redirect(create_thread)
-
 
 def post_notification(request, notification_pk, post_pk):
     notification = Notification.objects.get(pk=notification_pk)
