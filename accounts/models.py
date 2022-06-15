@@ -139,6 +139,11 @@ class UserProfile(models.Model):
         random_liked_userprofile_suggestion_query_set = UserProfile.objects.filter(pk__in=all_liked).all()
         for like in random_liked_userprofile_suggestion_query_set:
             dm_suggestions.append(like)
+        how_many_to_suggest = 2 - len(dm_suggestions)
+        if how_many_to_suggest > 1:
+            random_profiles = UserProfile.objects.order_by('?')[:how_many_to_suggest]
+            for profile in random_profiles:
+                dm_suggestions.append(profile)
         return dm_suggestions
 
     def following_suggestions(self):
