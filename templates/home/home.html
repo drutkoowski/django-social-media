@@ -57,17 +57,19 @@
                               <div>
                                <form action="{% url 'add_comment' post.id %}" method="post">
                                    {% csrf_token %}
-                                   {% for field in form %}
                                        <div class="row mt-4">
-                                            <a class="d-inline-block ml-3" href="{% url 'user_profile' user.username_slug %}"> <img class="avatar avatar-32 bg-light rounded-circle bg-primary text-white d-inline-block" src="{{ get_avatar }}" alt="avatar"></a>
-                                            <div class="d-inline-block ml-4">
+                                           <div class="col-2 col-lg-1">
+                                               <a class="d-inline-block" href="{% url 'user_profile' user.username_slug %}"> <img class="avatar avatar-32 bg-light rounded-circle bg-primary text-white d-inline-block" src="{{ get_avatar }}" alt="avatar"></a>
+                                           </div>
+                                           {% for field in form %}
+                                            <div class="col-6">
                                                 {{ field.errors }}
                                                 {{ field }}
-                                       </div>
-                                           {% endfor %}
-                                        <div class="d-inline-block ml-4">
-                                           <button class="btn btn-submit btn-primary btn-block">Comment</button>
-                                        </div>
+                                            </div>
+                                               {% endfor %}
+                                            <div class="d-inline-block ml-4">
+                                               <button class="btn btn-submit btn-primary btn-block">Comment</button>
+                                            </div>
                                        </div>
 
                                 </form>

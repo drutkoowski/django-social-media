@@ -34,30 +34,32 @@
                           <hr>
                       <h4>Comments</h4>
                       {% for comment in comments %}
-                          <div class="row">
-                                    <a class="text-decoration-none" href="{% url 'user_profile' comment.user.user.username_slug %}">
+                          <div class="row ml-0">
+                                <a class="text-decoration-none" href="{% url 'user_profile' comment.user.user.username_slug %}">
                                   <img class="avatar avatar-32 bg-light rounded-circle text-white" src="{{ post.owner.profile_picture.url }}">
                                   <small class="card-title d-inline-block"><span><b>{{ comment.user }}</b></span>: {{ comment.content }}</small></a><span><small class="ml-2"> {{ comment.created_at }}</small></span>
                         </div>
                       {% endfor %}
-                        <div>
-                           <form action="{% url 'add_comment' post.id %}" method="post">
-                               {% csrf_token %}
-                               {% for field in form %}
-                                   <div class="row mt-4">
-                                        <a class="d-inline-block ml-3" href="{% url 'user_profile' user.username_slug %}"> <img class="avatar avatar-32 bg-light rounded-circle bg-primary text-white d-inline-block" src="{{ get_avatar }}"></a>
-                                        <div class="d-inline-block ml-4">
-                                            {{ field.errors }}
-                                            {{ field }}
-                                   </div>
-                                       {% endfor %}
-                                    <div class="d-inline-block ml-4">
-                                       <button class="btn btn-submit btn-primary btn-block">Comment</button>
-                                    </div>
-                                   </div>
+                          <div>
+                               <form action="{% url 'add_comment' post.id %}" method="post">
+                                   {% csrf_token %}
+                                       <div class="row mt-4">
+                                           <div class="col-2 col-lg-1">
+                                               <a class="d-inline-block" href="{% url 'user_profile' user.username_slug %}"> <img class="avatar avatar-32 bg-light rounded-circle bg-primary text-white d-inline-block" src="{{ get_avatar }}" alt="avatar"></a>
+                                           </div>
+                                           {% for field in form %}
+                                            <div class="col-6">
+                                                {{ field.errors }}
+                                                {{ field }}
+                                            </div>
+                                               {% endfor %}
+                                            <div class="d-inline-block ml-4">
+                                               <button class="btn btn-submit btn-primary btn-block">Comment</button>
+                                            </div>
+                                       </div>
 
-                            </form>
-                        </div>
+                                </form>
+                            </div>
                       </div>
                     </div>
                 </div>
