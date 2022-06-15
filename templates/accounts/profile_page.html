@@ -35,7 +35,7 @@
                               <div class="col-lg-2 col-sm-4 text-lg-left ml-lg-2 text-center">
                                   <h3 class="text-primary">{{ user_profile.user.username }}</h3>
                               </div>
-                                <div class="col-lg-4 col-sm-4">
+                                <div class="col-lg-3 col-sm-4 ml-lg-4">
                                 {% if not user_profile.user.pk == get_current_user_profile.user.pk %}
                                       {% if not is_followed %}
                                       <form action="{% url 'user_profile' user_profile.user.username_slug %}" method="post">
@@ -52,7 +52,7 @@
                                 {% endif %}
                                   </div>
 
-                                <div class="col-lg-6 col-sm-4"></div>
+                                <div class="col-lg-7 col-sm-4"></div>
                       </div>
                             <div class="row text-lg-left">
                                 <div class="col-12 mt-2 ml-lg-2"><small>{{ user_profile.bio }}</small></div>
