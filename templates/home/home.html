@@ -48,9 +48,9 @@
                                   {% if post.view_recent_comments %}
                                         <small class="d-block mt-3"><b>Recent Comments</b> <a class="text-decoration-none" href="{% url 'single_post' post.id %}">See all ({{ post.post_comments }})</a></small>
                                    {% for comment in post.view_recent_comments %}
-                                        <a class="text-decoration-none" href="{% url 'user_profile' comment.user.user.username_slug %}">
-                                          <img class="avatar avatar-32 bg-light rounded-circle text-white" src="{{ comment.user.profile_picture.url }}" alt="avatar">
-                                          <small class="card-title d-inline-block"><span><b>{{ comment.user }}</b></span>: {{ comment.content }}</small></a><span><small> {{ comment.created_at }}</small></span>
+                                       <a class="text-decoration-none" href="{% url 'user_profile' comment.user.user.username_slug %}">
+                                  <img class="avatar avatar-32 bg-light rounded-circle text-white" src="{{ comment.user.profile_picture.url }}" alt="avatar">
+                                  <small class="card-title"><span><b>{{ comment.user }}</b></span>: {{ comment.content }}</small></a><span><small style="white-space: nowrap;"> {{ comment.created_at }}</small></span>
                                        <br>
                                    {% endfor %}
                                   {% endif %}
@@ -58,7 +58,7 @@
                                <form action="{% url 'add_comment' post.id %}" method="post">
                                    {% csrf_token %}
                                        <div class="row mt-4">
-                                           <div class="col-2 col-lg-1">
+                                           <div class="col-2">
                                                <a class="d-inline-block" href="{% url 'user_profile' user.username_slug %}"> <img class="avatar avatar-32 bg-light rounded-circle bg-primary text-white d-inline-block" src="{{ get_avatar }}" alt="avatar"></a>
                                            </div>
                                            {% for field in form %}
