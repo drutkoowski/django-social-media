@@ -59,7 +59,7 @@ def signup(request):
             user = Account.objects.create_user(first_name=first_name, last_name=last_name, email=email,
                                                password=password, username=username)
             user.phone_number = phone_number
-            if not user.slug:
+            if not user.username_slug:
                 user.username_slug = slugify(username)
             user.save()
 
