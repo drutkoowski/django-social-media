@@ -6,6 +6,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.text import slugify
 
 from inbox.models import Notification
 from .forms import UserForm, UserSignUpForm, EditProfileForm
@@ -58,7 +59,8 @@ def signup(request):
             user = Account.objects.create_user(first_name=first_name, last_name=last_name, email=email,
                                                password=password, username=username)
             user.phone_number = phone_number
-            user.username_slug = username
+            if not user.slug:
+                user.username_slug = slugify(username)
             user.save()
 
             profile = UserProfile()
