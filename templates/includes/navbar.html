@@ -10,21 +10,21 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent" >
             <ul class="navbar-nav ml-auto" style="font-size: 2rem;">
 
-                <li class="nav-item ml-lg-2 mt-lg-2" >
-                    <a href="{% url 'home_friends' %}"><i class="fa-solid fa-fw fa-house-user mt-1 text-primary bg-light"></i></a>
+                <li class="nav-item ml-lg-2 mt-lg-2 ml-1 mt-1" >
+                    <a href="{% url 'home_friends' %}"><i class="fa-solid fa-fw fa-house-user mt-1 text-primary bg-light"></i><p class="d-lg-none d-sm-inline ml-1 text-muted text-primary" style="font-size: 1.5rem">Followed</p></a>
                 </li>
-                <li class="nav-item ml-lg-2 mt-lg-2" style="margin-top:2px">
-                    <a href="{% url 'home' %}"><i class="fa-solid fa-fw fa-compass mt-1 text-primary bg-light"></i></a>
+                <li class="nav-item ml-lg-2 mt-lg-2 ml-1 mt-2" style="margin-top:2px">
+                    <a href="{% url 'home' %}"><i class="fa-solid fa-fw fa-compass mt-1 text-primary bg-light"></i><p class="d-lg-none d-sm-inline ml-1 text-muted text-primary" style="font-size: 1.5rem">Explore</p></a>
                 </li>
-                 <li class="nav-item ml-lg-2 mt-lg-2" style="font-size: 2.21rem;">
-                     <a href="{% url 'inbox' %}"><i class="fa-solid fa-fw fa-location-arrow mt-1 text-primary bg-light"></i></a>
+                 <li class="nav-item ml-lg-2 mt-lg-2 mt-2" style="font-size: 2.21rem;">
+                     <a href="{% url 'inbox' %}"><i class="fa-solid fa-fw fa-location-arrow mt-1 text-primary bg-light"></i><p class="d-lg-none d-sm-inline ml-1 text-muted text-primary" style="font-size: 1.5rem">Inbox</p></a>
                 </li>
                  <li class="nav-item ml-lg-2">
                     {% show_notifications %}
                 </li>
-                    <li class="nav-item dropdown ml-lg-2">
-                    <a class="nav-link dropdown-toggle p-lg-1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="{% url 'user_profile' user.username_slug %}"> <img class="avatar avatar-32 bg-light rounded-circle bg-primary text-white" src="{{ get_avatar }}"></a>
-                      <div class="dropdown-menu" aria-labelledby="navbarDropdown1">
+                    <li class="nav-item dropdown ml-lg-2 ml-2">
+                    <a class="nav-link dropdown-toggle p-lg-1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="{% url 'user_profile' user.username_slug %}"> <img class="avatar avatar-32 bg-light rounded-circle bg-primary text-white" src="{{ get_avatar }}" alt="avatar"></a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown1">
                           <a class="dropdown-item" href="{% url 'user_profile' user.username_slug %}">{{ user.username }}</a>
                           <hr>
                         <a class="dropdown-item" href="{% url 'user_profile' user.username_slug %}"><i class="fa-solid fa-user text-primary"></i> Profile</a>
@@ -36,7 +36,7 @@
                         <div class="dropdown-divider"></div>
                          <a class="dropdown-item text-primary" href="{% url 'logout' %}"><i class="fa-solid fa-power-off"></i> Logout</a>
                       </div>
-
+                    </li>
             </ul>
               <form action="{% url 'search' %}" class="search mt-2 form-inline my-2 my-lg-0 ml-lg-3" method="get">
                   {% csrf_token %}
